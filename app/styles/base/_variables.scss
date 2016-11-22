@@ -1,23 +1,7 @@
 //Colors
-$grey: #333333;
-$background-grey: #fafafa;
-$border: none;//1px solid black;
-$living-color: lightgreen;
-$long-living-color: green;
-$dead-color: lighten(lightblue, 15%);
+
 
 //Button Colors
-$btn-text: #fff;
-$transparency: 0.35;
-$btn-start-bg: transparentize(#337ab7, $transparency);
-$btn-start-border: darken($btn-start-bg, 5%);
-$btn-once-bg: transparentize(#5bc0de, $transparency);
-$btn-once-border: darken($btn-once-bg, 5%);
-$btn-stop-bg: transparentize(#d9534f, $transparency);
-$btn-stop-border: darken($btn-stop-bg, 5%);
-$btn-clear-bg: transparentize(#f0ad4e, $transparency);
-$btn-clear-border: darken($btn-clear-bg, 5%);
+
 
 //Screensizes
-$phone-screen: 767px; //Max Phone dimension
-$tablet-screen: 1279px; //Max Tablet dimension
