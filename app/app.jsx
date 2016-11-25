@@ -6,10 +6,10 @@ var Main = require('Main');
 
 var store = require('configureStore').configure();
 
-//App css
+//App css -- Handled by gulp now
 // require('style!css!sass!applicationStyles');
 
-//bootstrap
+//bootstrap -- Handled by gulp now
 // require('bootstrap-webpack');
 
 ReactDOM.render(
