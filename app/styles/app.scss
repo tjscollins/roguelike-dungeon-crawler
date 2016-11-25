@@ -2,5 +2,8 @@
 @import "base/mixins";
 
 //Bootstrap
+@import "bootstrap";
+@import "bootstrap/theme";
 
 //Components
+@import "components/header";
