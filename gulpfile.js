@@ -1,17 +1,17 @@
 var gulp = require('gulp');
 var uglify = require('gulp-uglify');
 var livereload = require('gulp-livereload');
-var concat = require('gulp-concat');
+// var concat = require('gulp-concat');
 var autoprefixer = require('gulp-autoprefixer');
 var plumber = require('gulp-plumber');
 var sourcemaps = require('gulp-sourcemaps');
 var sass = require('gulp-sass');
-var webpack = require('gulp-webpack');
+// var webpack = require('gulp-webpack');
 
 //File Paths
 const SRC_PATH = './app/';
 const DIST_PATH = './public/';
-const SCRIPTS_PATH = ['!app/tests/', 'app/**/*.jsx'];
+const SCRIPTS_PATH = ['./public/bundle.js'];
 const SCSS_PATH = 'app/styles/**/*.scss';
 
 // Bootstrap scss source
@@ -62,6 +62,8 @@ gulp.task('styles', ['fonts'], function() {
 });
 
 // Scripts
+//Webpack bundles the javascript.
+//Here we just uglify.
 gulp.task('scripts', function() {
   console.log('starting scripts task');
   return gulp.src(SCRIPTS_PATH)
@@ -69,11 +71,11 @@ gulp.task('scripts', function() {
       console.log('Scripts task error\n', err);
       this.emit('end');
     }))
-    .pipe(sourcemaps.init())
-    .pipe(webpack(require('./webpack.config.js')))
+    // .pipe(sourcemaps.init())
+    // .pipe(webpack(require('./webpack.config.js')))
     .pipe(uglify())
-    .pipe(concat('bundle.js'))
-    .pipe(sourcemaps.write())
+    // .pipe(concat('bundle.js'))
+    // .pipe(sourcemaps.write())
     .pipe(gulp.dest(DIST_PATH))
     .pipe(livereload());
 });

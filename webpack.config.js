@@ -17,10 +17,10 @@ module.exports = {
       'jquery': 'jquery'
     })
   ],
-  // output: {
-  //   path: __dirname,
-  //   filename: './public/bundle.js'
-  // },
+  output: {
+    path: __dirname,
+    filename: './public/bundle.js'
+  },
   resolve: {
     root: __dirname,
     modulesDirectories: [
@@ -40,8 +40,8 @@ module.exports = {
       query: {
         presets: ['react', 'es2015', 'stage-0']
       },
-    //   test: /\.jsx?$/,
-    //   exclude: /(node_modules|bower_components)/
+      test: /\.jsx?$/,
+      exclude: /(node_modules|bower_components)/
     // }, {
     //   test: /\.css$/,
     //   loader: 'style-loader!css-loader'
