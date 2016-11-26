@@ -14,3 +14,12 @@ export var mapReducer = (state = {}, action) => {
       return state;
   }
 };
+
+export var characterReducer = (state = {}, action) => {
+  switch (action.type) {
+    case 'EAT_HP_POTION':
+      return state;
+    default:
+      return state;
+  }
+};

@@ -16,7 +16,7 @@ export var Map = React.createClass({
     }
   },
   render: function() {
-    var {map} = this.props;
+    var {map, character} = this.props;
     var that = this;
     function grid(depth) {
       var cols = map.levels[depth].length;
@@ -39,7 +39,7 @@ export var Map = React.createClass({
     return (
       <div className="container">
         <h1>Map.jsx</h1>
-        {grid(0)}
+        {grid(character.depth)}
       </div>
     );
   }

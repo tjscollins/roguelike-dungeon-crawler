@@ -5,7 +5,6 @@ import Map from 'Map';
 
 var Main = React.createClass({
   render: function() {
-    var {map} = this.props;
     return (
       <div>
         <Header/>
