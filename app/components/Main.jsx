@@ -1,10 +1,11 @@
 var React = require('react');
 
 var Header = require('Header');
-var Map = require('Map');
+import Map from 'Map';
 
 var Main = React.createClass({
-  render: function () {
+  render: function() {
+    var {map} = this.props;
     return (
       <div>
         <Header/>

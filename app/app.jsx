@@ -3,8 +3,14 @@ var ReactDOM = require('react-dom');
 var {Provider} = require('react-redux');
 // var {Route, Router, IndexRoute, hashHistory} = require('react-router');
 var Main = require('Main');
+var Roguelike = require('Roguelike');
 
-var store = require('configureStore').configure();
+//Generate Dungeon
+var map = {
+  levels: [Roguelike.randomLevel(15, 15, true)]
+};
+
+var store = require('configureStore').configure({map});
 
 //App css -- Handled by gulp now
 // require('style!css!sass!applicationStyles');
@@ -14,6 +20,5 @@ var store = require('configureStore').configure();
 
 ReactDOM.render(
   <Provider store={store}>
-      <Main/>
-  </Provider>
-, document.getElementById('app'));
+  <Main/>
+</Provider>, document.getElementById('app'));

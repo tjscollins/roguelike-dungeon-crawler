@@ -31,6 +31,7 @@
     "bootstrap": "^3.3.7",
     "bootstrap-webpack": "0.0.5",
     "css-loader": "^0.23.1",
+    "deep-freeze-strict": "^1.1.1",
     "eslint": "^3.10.2",
     "eslint-config-google": "^0.7.0",
     "eslint-config-standard": "^6.2.1",

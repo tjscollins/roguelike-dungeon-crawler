@@ -1,0 +1,18 @@
+.square {
+  border: 1px solid grey;
+  background: black;
+  width: 15px;
+  height: 15px;
+  margin: -1px;
+  float:left;
+}
+
+.ground {
+  @extend .square;
+  background: white;
+}
+
+.player {
+  @extend .square;
+  background: blue;
+}

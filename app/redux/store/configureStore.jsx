@@ -1,8 +1,12 @@
 var redux = require('redux');
-var {} = require('reducers');
+var {mapReducer} = require('reducers');
 
-export var configure = (initialState = {}) => {
-  var reducer = redux.combineReducers({});
+export var configure = (initialState = {
+  map: {
+    levels: []
+  }
+}) => {
+  var reducer = redux.combineReducers({map: mapReducer});
 
   var store = redux.createStore(reducer, initialState, redux.compose(window.devToolsExtension
     ? window.devToolsExtension()
