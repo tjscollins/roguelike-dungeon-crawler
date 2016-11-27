@@ -53,7 +53,7 @@ var randomRoom = (level, terrain, count) => {
     // console.log('Creating initial Room');
     //If No rooms, add starting room, update parameters and return
     addRoom(level, null, 0);
-    count = 75;
+    count = 100;
     var nextTerrain = randomInteger(5);
     return {inProgress: true, type: nextTerrain, rooms: count};
   } else {
@@ -100,7 +100,7 @@ var itFits = (level, direction, terrain) => {
     //Need to know which direction to look in first
     switch (direction) {
       case 'north':
-        var success = undefined;
+        var success;
         var posY = Math.max(0, cell[1] - 7);
         for (var posX = Math.max(0, cell[0] - 7); posX < cell[0]; posX++) {
           success = true;
@@ -176,22 +176,18 @@ var itFits = (level, direction, terrain) => {
         var posX = Math.min(map.length, cell[0] + 2);
         for (var posY = Math.max(0, cell[1] - 7); posY < cell[1]; posY++) {
           success = true;
-          // console.log(level, posX, posY);
           for (var i = posX; i < Math.min(map.length, posX + 7); i++) {
             for (var j = posY; j < posY + 7; j++) {
               if (map[i][j] !== 0) {
-                // console.log(i, j);
                 success = false;
                 j = posY + 7;
               }
             }
             if ((i === posX + 6) && success) {
-              // console.log('Success');
               posY = cell[1];
             }
           }
         }
-        // console.log('Success', success);
         return success
           ? true
           : false;
@@ -199,7 +195,6 @@ var itFits = (level, direction, terrain) => {
     }
   });
   if (possibleChoices.length > 0) {
-    // console.log('Possible choices', possibleChoices);
     var choice = randomInteger(possibleChoices.length) - 1;
     return possibleChoices[choice];
   } else {
@@ -227,13 +222,12 @@ var addRoom = (level, choice, type) => {
       }
       rooms.push([posX, posY, width, height]);
       //Create Room
-      // console.log('Adding room of ' + width + 'x' + height + ' at ' + posX + 'x' + posY);
       var startSet = false;
       for (var i = posX; i < posX + width; ++i) {
         for (var j = posY; j < posY + height; ++j) {
           var bound = boundary(posX, posY, width, height, i, j);
           if (bound) {
-            boundaries.push(bound)
+            boundaries.push(bound);
           }
           map[i][j] = i > posX && i < posX + width && j > posY && j < posY + height && !startSet
             ? 10
@@ -246,7 +240,6 @@ var addRoom = (level, choice, type) => {
       break;
     case 1:
       // Random Rectangle Room, up to 6x6
-      // console.log(level.map, choice);
       switch (choice[2]) {
         case 'north':
           var x = choice[0],
@@ -270,7 +263,7 @@ var addRoom = (level, choice, type) => {
               level.map[x + i][y - j] = 1;
               var bound = boundary(posX, posY, width, height, x + i, y - j);
               if (bound) {
-                level.boundaries.push(bound)
+                level.boundaries.push(bound);
               }
             }
           }
@@ -294,12 +287,12 @@ var addRoom = (level, choice, type) => {
               level.map[x - i][y + j] = 1;
               var bound = boundary(posX, posY, width, height, x - i, y + j);
               if (bound) {
-                level.boundaries.push(bound)
+                level.boundaries.push(bound);
               }
             }
           }
           boundaries = boundaries.filter((cell) => {
-            if ((cell[0] == x || cell[0] == x - 2) && cell[1] === y) {
+            if ((cell[0] === x || cell[0] === x - 2) && cell[1] === y) {
               return false;
             } else {
               return true;
@@ -328,7 +321,7 @@ var addRoom = (level, choice, type) => {
               level.map[x + i][y + j] = 1;
               var bound = boundary(posX, posY, width, height, x + i, y + j);
               if (bound) {
-                level.boundaries.push(bound)
+                level.boundaries.push(bound);
               }
             }
           }
@@ -352,12 +345,12 @@ var addRoom = (level, choice, type) => {
               level.map[x + i][y + j] = 1;
               var bound = boundary(posX, posY, width, height, x + i, y + j);
               if (bound) {
-                level.boundaries.push(bound)
+                level.boundaries.push(bound);
               }
             }
           }
           boundaries = boundaries.filter((cell) => {
-            if ((cell[0] == x || cell[0] == x + 2) && cell[1] === y) {
+            if ((cell[0] === x || cell[0] === x + 2) && cell[1] === y) {
               return false;
             } else {
               return true;
@@ -366,11 +359,15 @@ var addRoom = (level, choice, type) => {
           break;
         default:
       }
-
+      break;
     case 2:
+      break;
     case 3:
+      break;
     case 4:
+      break;
     case 5:
+      break;
     default:
       break;
   }
@@ -456,4 +453,4 @@ export var populate = (map) => {
 
 var randomInteger = (max) => {
   return Math.ceil(Math.random() * max);
-};;
+};

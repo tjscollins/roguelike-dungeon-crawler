@@ -6,6 +6,10 @@ export var populateLevel = (depth) => {
   return {type: 'POPULATE_LEVEL', depth};
 };
 
+export var placeCharacter = (character, level) => {
+  return {type: 'PLACE_CHARACTER', character, level};
+};
+
 export var moveNorth = () => {};
 
 export var moveEast = () => {};

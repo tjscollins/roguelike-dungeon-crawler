@@ -12,12 +12,10 @@ export var dungeonReducer = (state = {}, action) => {
       };
     case 'POPULATE_LEVEL':
       var {levels} = state;
-      // console.log('POPULATE_LEVEL', levels);
       return {
         ...state,
         levels: levels.map((val, i, arr) => {
           if (i === action.depth) {
-            // console.log(val);
             return {
               ...val,
               map: Roguelike.populate(val.map)
@@ -34,8 +32,23 @@ export var dungeonReducer = (state = {}, action) => {
 
 export var characterReducer = (state = {}, action) => {
   switch (action.type) {
-    case 'MOVE_NORTH':
-      return state;
+    case 'PLACE_CHARACTER':
+      var w = action.level.map.length,
+        h = action.level.map[0].length,
+        x = 0,
+        y = 0;
+      for (var i = 0; i < w; i++) {
+        for (var j = 0; j < h; j++) {
+          if (action.level.map[i][j] === 10) {
+            x = i;
+            y = j;
+          }
+        }
+      }
+      return {
+        ...state,
+        position: [x, y]
+      };
     default:
       return state;
   }

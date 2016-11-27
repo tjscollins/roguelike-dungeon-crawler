@@ -22,6 +22,11 @@
     background: blue;
 }
 
+.player-pos {
+    @extend .square;
+    background: blue;
+}
+
 .water {
     @extend .square;
     background: lightblue;

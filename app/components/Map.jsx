@@ -3,6 +3,14 @@ var {connect} = require('react-redux');
 var actions = require('actions');
 
 export var Map = React.createClass({
+  propTypes: {
+    dungeon: React.PropTypes.object.isRequired,
+    character: React.PropTypes.object.isRequired
+  },
+  componentWillMount: function() {
+    var {dungeon, character, dispatch} = this.props;
+    dispatch(actions.placeCharacter(character, dungeon.levels[0]));
+  },
   gridClass: function(level, x, y) {
     switch (level[x][y]) {
       case 0:
@@ -25,12 +33,15 @@ export var Map = React.createClass({
         return 'downstairs';
       case 10:
         return 'player-start';
+      case 11:
+        return 'player-pos';
       default:
         return 'square';
     }
   },
   render: function() {
-    var {dungeon, character} = this.props;
+    var {dungeon, character, dispatch} = this.props;
+    // console.log(this.props);
     var that = this;
     function grid(depth) {
       // console.log(dungeon);

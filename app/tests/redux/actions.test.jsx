@@ -21,4 +21,14 @@ describe('actions', () => {
     var res = actions.populateLevel(1);
     expect(res).toEqual(action);
   });
+
+  it('should generte the PLACE_CHARACTER action', () => {
+    var action = {
+      type: 'PLACE_CHARACTER',
+      character: 'character',
+      level: 'level'
+    };
+    var res = actions.placeCharacter('character', 'level');
+    expect(res).toEqual(action);
+  });
 });
