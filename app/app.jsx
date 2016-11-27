@@ -7,7 +7,7 @@ var Roguelike = require('Roguelike');
 
 //Generate Dungeon
 var map = {
-  levels: [Roguelike.randomLevel(30, 30, true)]
+  levels: [Roguelike.randomLevel(50, 60, true)]
 };
 
 var character = {

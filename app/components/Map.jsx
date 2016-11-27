@@ -19,14 +19,14 @@ export var Map = React.createClass({
     var {map, character} = this.props;
     var that = this;
     function grid(depth) {
-      var cols = map.levels[depth].length;
-      var rows = map.levels[depth][0].length;
+      var cols = map.levels[depth].map.length;
+      var rows = map.levels[depth].map[0].length;
       var gridDivs = [];
       for (var i = 0; i < rows; i++) {
         var rowHTML = (xnum, ynum) => {
           var row = [];
           for (var j = 0; j < xnum; j++) {
-            row[j] = <div key={j + 'x' + ynum} className={that.gridClass(map.levels[depth], j, ynum)}/>;
+            row[j] = <div key={j + 'x' + ynum} className={that.gridClass(map.levels[depth].map, j, ynum)}/>;
           }
           // console.log(xnum, ynum, row.length);
           return row;

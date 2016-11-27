@@ -15,50 +15,41 @@ const SCRIPTS_PATH = ['./public/bundle.js'];
 const SCSS_PATH = 'app/styles/**/*.scss';
 
 // Bootstrap scss source
-var bootstrapSass = {
-        in: './node_modules/bootstrap-sass/'
-    };
+var bootstrapSass = { in: './node_modules/bootstrap-sass/'
+};
 
 // fonts
-var fonts = {
-        in: [SRC_PATH + 'fonts/*.*', bootstrapSass.in + 'assets/fonts/**/*'],
-        out: DIST_PATH + 'fonts/'
-    };
+var fonts = { in: [
+    SRC_PATH + 'fonts/*.*',
+    bootstrapSass. in + 'assets/fonts/**/*'
+  ],
+  out: DIST_PATH + 'fonts/'
+};
 
 // css source file: .scss files
-var scss = {
-    in: SRC_PATH + 'styles/app.scss',
-    out: DIST_PATH,
-    watch: SRC_PATH + 'scss/**/*',
-    sassOpts: {
-        outputStyle: 'compressed',
-        precison: 3,
-        errLogToConsole: true,
-        includePaths: [bootstrapSass.in + 'assets/stylesheets']
-    }
+var scss = { in: SRC_PATH + 'styles/app.scss',
+  out: DIST_PATH,
+  watch: SRC_PATH + 'scss/**/*',
+  sassOpts: {
+    outputStyle: 'compressed',
+    precison: 3,
+    errLogToConsole: true,
+    includePaths: [bootstrapSass. in + 'assets/stylesheets']
+  }
 };
 
 // copy bootstrap required fonts to dest
-gulp.task('fonts', function () {
-    return gulp
-        .src(fonts.in)
-        .pipe(gulp.dest(fonts.out));
+gulp.task('fonts', function() {
+  return gulp.src(fonts. in).pipe(gulp.dest(fonts.out));
 });
 
 //Sass
 gulp.task('styles', ['fonts'], function() {
   // console.log('Starting styles task');
-  return gulp.src(scss.in)
-    .pipe(plumber(function(err) {
-      console.log('Styles task error\n', err);
-      this.emit('end');
-    }))
-    .pipe(sourcemaps.init())
-    .pipe(sass(scss.sassOpts))
-    .pipe(autoprefixer())
-    .pipe(sourcemaps.write())
-    .pipe(gulp.dest(scss.out))
-    .pipe(livereload());
+  return gulp.src(scss. in).pipe(plumber(function(err) {
+    console.log('Styles task error\n', err);
+    this.emit('end');
+  })).pipe(sourcemaps.init()).pipe(sass(scss.sassOpts)).pipe(autoprefixer()).pipe(sourcemaps.write()).pipe(gulp.dest(scss.out)).pipe(livereload());
 });
 
 // Scripts
@@ -66,18 +57,16 @@ gulp.task('styles', ['fonts'], function() {
 //Here we just uglify.
 gulp.task('scripts', function() {
   console.log('starting scripts task');
-  return gulp.src(SCRIPTS_PATH)
-    .pipe(plumber(function(err) {
-      console.log('Scripts task error\n', err);
-      this.emit('end');
-    }))
-    // .pipe(sourcemaps.init())
-    // .pipe(webpack(require('./webpack.config.js')))
-    .pipe(uglify())
-    // .pipe(concat('bundle.js'))
-    // .pipe(sourcemaps.write())
-    .pipe(gulp.dest(DIST_PATH))
-    .pipe(livereload());
+  return gulp.src(SCRIPTS_PATH).pipe(plumber(function(err) {
+    console.log('Scripts task error\n', err);
+    this.emit('end');
+  }))
+  // .pipe(sourcemaps.init())
+  // .pipe(webpack(require('./webpack.config.js')))
+  // .pipe(uglify())
+  // .pipe(concat('bundle.js'))
+  // .pipe(sourcemaps.write())
+    .pipe(gulp.dest(DIST_PATH)).pipe(livereload());
 });
 
 // Images
@@ -85,7 +74,9 @@ gulp.task('images', function() {
   console.log('starting images task');
 });
 
-gulp.task('default', ['styles', 'scripts'], function() {
+gulp.task('default', [
+  'styles', 'scripts'
+], function() {
   // console.log('Starting default task');
 });
 
