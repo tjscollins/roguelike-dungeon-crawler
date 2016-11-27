@@ -1,18 +1,53 @@
 .square {
-  border: 1px solid grey;
-  background: black;
-  width: 15px;
-  height: 15px;
-  margin: -1px;
-  float:left;
+    border: 1px solid grey;
+    background: black;
+    width: 15px;
+    height: 15px;
+    margin: -1px;
+    float: left;
+}
+
+.hallway {
+    @extend .square;
+    background: white;
 }
 
 .ground {
-  @extend .square;
-  background: white;
+    @extend .square;
+    background: white;
 }
 
-.player {
-  @extend .square;
-  background: blue;
+.player-start {
+    @extend .square;
+    background: blue;
+}
+
+.water {
+    @extend .square;
+    background: lightblue;
+}
+
+.lava {
+    @extend .square;
+    background: red;
+}
+
+.weapon {
+    @extend .square;
+    background: pink;
+}
+
+.mob {
+    @extend .square;
+    background: magenta;
+}
+
+.hpitem {
+    @extend .square;
+    background: green;
+}
+
+.downstairs {
+    @extend .square;
+    background: yellow;
 }

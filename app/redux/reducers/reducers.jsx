@@ -1,6 +1,6 @@
 var Roguelike = require('Roguelike');
 
-export var mapReducer = (state = {}, action) => {
+export var dungeonReducer = (state = {}, action) => {
   switch (action.type) {
     case 'GENERATE_DUNGEON_LEVEL':
       return {
@@ -10,6 +10,23 @@ export var mapReducer = (state = {}, action) => {
           Roguelike.randomLevel(action.cols, action.rows, true)
         ]
       };
+    case 'POPULATE_LEVEL':
+      var {levels} = state;
+      // console.log('POPULATE_LEVEL', levels);
+      return {
+        ...state,
+        levels: levels.map((val, i, arr) => {
+          if (i === action.depth) {
+            // console.log(val);
+            return {
+              ...val,
+              map: Roguelike.populate(val.map)
+            };
+          } else {
+            return val;
+          }
+        })
+      };
     default:
       return state;
   }
@@ -17,7 +34,7 @@ export var mapReducer = (state = {}, action) => {
 
 export var characterReducer = (state = {}, action) => {
   switch (action.type) {
-    case 'EAT_HP_POTION':
+    case 'MOVE_NORTH':
       return state;
     default:
       return state;

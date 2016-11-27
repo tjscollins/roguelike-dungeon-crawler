@@ -9,24 +9,39 @@ export var Map = React.createClass({
         return 'square';
       case 1:
         return 'ground';
+      case 2:
+        return 'water';
+      case 3:
+        return 'lava';
+      case 4:
+        return 'mob';
+      case 5:
+        return 'hpitem';
+      case 6:
+        return 'weapon';
+      case 8:
+        return 'hallway';
+      case 9:
+        return 'downstairs';
       case 10:
-        return 'player';
+        return 'player-start';
       default:
         return 'square';
     }
   },
   render: function() {
-    var {map, character} = this.props;
+    var {dungeon, character} = this.props;
     var that = this;
     function grid(depth) {
-      var cols = map.levels[depth].map.length;
-      var rows = map.levels[depth].map[0].length;
+      // console.log(dungeon);
+      var cols = dungeon.levels[depth].map.length;
+      var rows = dungeon.levels[depth].map[0].length;
       var gridDivs = [];
       for (var i = 0; i < rows; i++) {
         var rowHTML = (xnum, ynum) => {
           var row = [];
           for (var j = 0; j < xnum; j++) {
-            row[j] = <div key={j + 'x' + ynum} className={that.gridClass(map.levels[depth].map, j, ynum)}/>;
+            row[j] = <div key={j + 'x' + ynum} className={that.gridClass(dungeon.levels[depth].map, j, ynum)}/>;
           }
           // console.log(xnum, ynum, row.length);
           return row;
@@ -38,7 +53,6 @@ export var Map = React.createClass({
     }
     return (
       <div className="container">
-        <h1>Map.jsx</h1>
         {grid(character.depth)}
       </div>
     );

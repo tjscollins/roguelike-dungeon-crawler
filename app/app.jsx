@@ -3,11 +3,11 @@ var ReactDOM = require('react-dom');
 var {Provider} = require('react-redux');
 // var {Route, Router, IndexRoute, hashHistory} = require('react-router');
 var Main = require('Main');
-var Roguelike = require('Roguelike');
+var actions = require('actions');
 
-//Generate Dungeon
-var map = {
-  levels: [Roguelike.randomLevel(50, 60, true)]
+//Create Initial State
+var dungeon = {
+  levels: []
 };
 
 var character = {
@@ -17,10 +17,17 @@ var character = {
   weapon: {
     name: 'Dead Fish',
     dmg: '25'
-  }
+  },
+  position: [0, 0]
 };
 
-var store = require('configureStore').configure({map, character});
+var store = require('configureStore').configure({dungeon, character});
+
+//Generate Dungeon
+store.dispatch(actions.generateDungeonLevel(50, 60));
+
+//Populate Dungeon
+store.dispatch(actions.populateLevel(0));
 
 //App css -- Handled by gulp now
 // require('style!css!sass!applicationStyles');
