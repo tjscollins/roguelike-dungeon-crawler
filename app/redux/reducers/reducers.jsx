@@ -32,7 +32,7 @@ export var dungeonReducer = (state = {}, action) => {
 
 export var characterReducer = (state = {}, action) => {
   switch (action.type) {
-    case 'PLACE_CHARACTER':
+    case 'PLACE_CHARACTER_START':
       var w = action.level.map.length,
         h = action.level.map[0].length,
         x = 0,
@@ -48,6 +48,56 @@ export var characterReducer = (state = {}, action) => {
       return {
         ...state,
         position: [x, y]
+      };
+    case 'MOVE_NORTH':
+      var x = action.character.position[0],
+        y = action.character.position[1];
+      var position = y > 0 && action.level.map[x][y - 1] !== 0
+        ? [
+          x, y - 1
+        ]
+        : [x, y];
+      return {
+        ...action.character,
+        position
+      };
+    case 'MOVE_SOUTH':
+      var x = action.character.position[0],
+        y = action.character.position[1];
+      var position = y < action.level.map[0].length && action.level.map[x][y + 1] !== 0
+        ? [
+          x, y + 1
+        ]
+        : [x, y];
+      return {
+        ...action.character,
+        position
+      };
+    case 'MOVE_EAST':
+      var x = action.character.position[0],
+        y = action.character.position[1];
+      var position = y < action.level.map.length && action.level.map[x + 1][y] !== 0
+        ? [
+          x + 1,
+          y
+        ]
+        : [x, y];
+      return {
+        ...action.character,
+        position
+      };
+    case 'MOVE_WEST':
+      var x = action.character.position[0],
+        y = action.character.position[1];
+      var position = x > 0 && action.level.map[x - 1][y] !== 0
+        ? [
+          x - 1,
+          y
+        ]
+        : [x, y];
+      return {
+        ...action.character,
+        position
       };
     default:
       return state;
