@@ -71,4 +71,14 @@ describe('actions', () => {
     var res = actions.moveWest('character', 'level');
     expect(res).toEqual(action);
   });
+
+  it('should generate the ATTACK_MOB action', () => {
+    var action = {
+      type: 'ATTACK_MOB',
+      character: 'character',
+      monsterPosition: 'monsterPosition'
+    };
+    var res = actions.attackMob('character', 'monsterPosition');
+    expect(res).toEqual(action);
+  });
 });

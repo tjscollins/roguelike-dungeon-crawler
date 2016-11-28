@@ -432,9 +432,9 @@ export var populate = (dungeon, depth) => {
               map[i][j] = 9;
               break;
             case 'weapon':
-              var name = '';
+              var name = weaponName(depth);
               var dmg = randomInteger(5) + (depth + 1) * 8;
-              var position = [i, j]
+              var position = [i, j];
               weapon = {
                 name,
                 dmg,
@@ -480,14 +480,29 @@ export var populate = (dungeon, depth) => {
     monsters,
     healthItems,
     weapon
-  }
+  };
   return dungeon;
+};
+
+var weaponName = (depth) => {
+  switch (depth) {
+    case 0:
+      return 'Brass Knuckles';
+    case 1:
+      return 'Shiny Dagger';
+    case 2:
+      return 'Fearsome Mace';
+    case 3:
+      return 'Rusty Shiv';
+    case 4:
+      return 'Red Herring';
+  }
 };
 
 /*----------------------Game Mechanics Functions---------------------------*/
 
 export var fallIntoWater = (character) => {
-  var {health, xp, depth, weapon, position} = character;
+  var {health, weapon} = character;
   return {
     ...character,
     health: health - 5,
@@ -499,13 +514,53 @@ export var fallIntoWater = (character) => {
 };
 
 export var fallIntoLava = (character) => {
-  var {health, xp, depth, weapon, position} = character;
+  var {health} = character;
   return {
     ...character,
     health: health - 50,
     weapon: {
       weapon: 'Fists',
-      dmg: 5
+      dmg: 1
     }
   };
 };
+
+export var attackMob = (dungeon, character, monsterPosition) => {
+  var {health, weapon, xp, depth, position} = character;
+  var {map, monsters} = dungeon.levels[depth];
+  var enemy = monsters.filter((mob) => {
+    return mob.position[0] === monsterPosition[0] && mob.position[1] === monsterPosition[1];
+  });
+  var index = monsters.indexOf(enemy[0]);
+
+  var hp = enemy[0].hp - Math.max(0, weapon.dmg - 5 + randomInteger(10));
+
+  if (hp > 0) {
+    return {
+      ...dungeon,
+      levels: dungeon.levels.slice(0, depth).concat([
+        {
+          ...dungeon.levels[depth],
+          monsters: monsters.slice(0, index).concat([
+            {
+              ...enemy[0],
+              hp
+            }
+          ]).concat(monsters.slice(index + 1))
+        }
+      ]).concat(dungeon.levels.slice(depth + 1))
+    };
+  } else {
+    return {
+      ...dungeon,
+      levels: dungeon.levels.slice(0, depth).concat([
+        {
+          ...dungeon.levels[depth],
+          monsters: monsters.slice(0, index).concat(monsters.slice(index + 1))
+        }
+      ]).concat(dungeon.levels.slice(depth + 1))
+    };
+  }
+};
+
+export var encounterMonster = (character, dungeon, monsterPosition) => {}

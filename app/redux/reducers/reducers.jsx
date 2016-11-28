@@ -12,6 +12,20 @@ export var dungeonReducer = (state = {}, action) => {
       };
     case 'POPULATE_LEVEL':
       return Roguelike.populate(state, action.depth);
+    case 'ATTACK_MOB':
+      return Roguelike.attackMob(state, action.character, action.monsterPosition);
+    case 'REMOVE_DEAD_MOB':
+      var {depth, monsterPosition} = action;
+      var {map} = state.levels[depth];
+      var x = monsterPosition[0],
+        y = monsterPosition[1];
+      return {
+        ...state,
+        levels: state.levels.slice(0, depth).concat({
+          ...state.levels[depth],
+          map: map.slice(0, x).concat([map[x].slice(0, y).concat([1]).concat(map[x].slice(y + 1))]).concat(map.slice(x + 1))
+        })
+      };
     default:
       return state;
   }
@@ -85,6 +99,11 @@ export var characterReducer = (state = {}, action) => {
       return {
         ...action.character,
         position
+      };
+    case 'UPDATE_HP':
+      return {
+        ...state,
+        health: state.health + action.dHP
       };
     default:
       return state;

@@ -54,26 +54,26 @@ export var Map = React.createClass({
     switch (e.keyCode) {
       case 38:
         //Up-Arrow
-        dispatch(actions.moveNorth(moveInto([
+        dispatch(actions.moveNorth(this.moveInto([
           position[0], position[1] - 1
         ]), dungeon.levels[depth]));
         break;
       case 40:
         //Down-Arrow
-        dispatch(actions.moveSouth(moveInto([
+        dispatch(actions.moveSouth(this.moveInto([
           position[0], position[1] + 1
         ]), dungeon.levels[depth]));
         break;
       case 39:
         //Right-Arrow
-        dispatch(actions.moveEast(moveInto([
+        dispatch(actions.moveEast(this.moveInto([
           position[0] + 1,
           position[1]
         ]), dungeon.levels[depth]));
         break;
       case 37:
         //Left-Arrow
-        dispatch(actions.moveWest(moveInto([
+        dispatch(actions.moveWest(this.moveInto([
           position[0] - 1,
           position[1]
         ]), dungeon.levels[depth]));
@@ -81,28 +81,45 @@ export var Map = React.createClass({
       default:
         // console.log('Unhandled keypress', e.keyCode);
     }
+  },
 
-    function moveInto(finalPos) {
-      // var {character, dungeon, dispatch} = this.props;
-      // var {depth, position} = character;
-      //Checks the result of character's move and applies relevant game mechanics
-      var terrain = dungeon.levels[depth].map[finalPos[0]][finalPos[1]];
-      switch (terrain) {
-        case 2:
-          return Roguelike.fallIntoWater(character);
-        case 3:
-          return Roguelike.fallIntoLava(character);
-        case 4:
-          return 'mob';
-        case 5:
-          return 'hpitem';
-        case 6:
-          return 'weapon';
-        case 9:
-          return 'downstairs';
-        default:
+  moveInto: function(finalPos) {
+    var {character, dungeon, dispatch} = this.props;
+    var {depth, position} = character;
+    //Checks the result of character's move and applies relevant game mechanics
+    var terrain = dungeon.levels[depth].map[finalPos[0]][finalPos[1]];
+    switch (terrain) {
+      case 2:
+        return Roguelike.fallIntoWater(character);
+      case 3:
+        return Roguelike.fallIntoLava(character);
+      case 4:
+        console.log('Attacking');
+        dispatch(actions.attackMob(character, finalPos));
+        var enemy = this.props.dungeon.levels[depth].monsters.filter((mob) => {
+          return mob.position[0] === finalPos[0] && mob.position[1] === finalPos[1];
+        });
+        console.log(enemy[0]);
+        if (enemy[0]) {
+          var dmgTaken = Math.max(0, enemy[0].dmg + Math.ceil(Math.random() * 10) - 5);
+          dispatch(actions.updateHP(dmgTaken * -1));
+          if (character.health > 0) {
+            this.moveInto(finalPos);
+          } else {
+            return character;
+          }
+        } else {
           return character;
-      }
+        }
+        break;
+      case 5:
+        return 'hpitem';
+      case 6:
+        return 'weapon';
+      case 9:
+        return 'downstairs';
+      default:
+        return character;
     }
   },
   render: function() {

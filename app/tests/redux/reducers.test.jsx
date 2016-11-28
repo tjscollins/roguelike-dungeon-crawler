@@ -21,7 +21,7 @@ describe('reducers', () => {
       expect(res.levels[0].map[0].length).toEqual(15);
     });
 
-    it('should populate a dungeon level with obstacles and items', () => {
+    it('should POPULATE a dungeon LEVEL with obstacles and items', () => {
       var action = {
         type: 'POPULATE_LEVEL',
         depth: 0
@@ -39,6 +39,100 @@ describe('reducers', () => {
       expect(res.levels[0].map).toBeA('array');
       expect(res.levels[0].map.length).toEqual(50);
       expect(res.levels[0].map[0].length).toEqual(50);
+    });
+
+    it('should ATTACK a MOB and reduce its hit points', () => {
+      var action = {
+        type: 'ATTACK_MOB',
+        character: {
+          health: 100,
+          xp: 0,
+          depth: 0,
+          weapon: {
+            name: 'Dead Fish',
+            dmg: 50
+          },
+          position: [0, 0]
+        },
+        monsterPosition: [0, 0]
+      };
+      var dungeon = {
+        levels: [
+          {
+            map: [
+              [4]
+            ],
+            monsters: [
+              {
+                level: 1,
+                exp: 1,
+                hp: 100,
+                dmg: 1,
+                position: [0, 0]
+              }
+            ]
+          }
+        ]
+      };
+      var res = reducers.dungeonReducer(df(dungeon), df(action));
+      expect(res.levels[0].monsters[0].hp).toBeLessThan(dungeon.levels[0].monsters[0].hp);
+    });
+
+    it('should kill the mob when ATTACKing the MOB lowers its hp below zero', () => {
+      var action = {
+        type: 'ATTACK_MOB',
+        character: {
+          health: 100,
+          xp: 0,
+          depth: 0,
+          weapon: {
+            name: 'Dead Fish',
+            dmg: 50
+          },
+          position: [0, 0]
+        },
+        monsterPosition: [0, 0]
+      };
+      var dungeon = {
+        levels: [
+          {
+            map: [
+              [4]
+            ],
+            monsters: [
+              {
+                level: 1,
+                exp: 1,
+                hp: 1,
+                dmg: 1,
+                position: [0, 0]
+              }
+            ]
+          }
+        ]
+      };
+      var res = reducers.dungeonReducer(df(dungeon), df(action));
+      expect(res.levels[0].monsters[0]).toNotExist();
+    });
+
+    it('should REMOVE DEAD MOBs', () => {
+      var action = {
+        type: 'REMOVE_DEAD_MOB',
+        depth: 0,
+        monsterPosition: [0, 0]
+      };
+      var dungeon = {
+        levels: [
+          {
+            map: [
+              [4]
+            ]
+          }
+        ]
+      };
+      var res = reducers.dungeonReducer(df(dungeon), df(action));
+      // console.log(res, res.levels, res.levels[0], res.levels[0].map);
+      expect(res.levels[0].map[0][0]).toEqual(1);
     });
   });
 
@@ -359,5 +453,26 @@ describe('reducers', () => {
       var res = reducers.characterReducer(df(dungeon), df(action));
       expect(res.position).toEqual([0, 1]);
     });
+
+    it('should UPDATE the player\'s HP when taking damage or receiving an hpItem', () => {
+      var action = {
+        type: 'UPDATE_HP',
+        dHP: 10
+      };
+      var character = {
+        health: 100,
+        xp: 0,
+        depth: 0,
+        weapon: {
+          name: 'Dead Fish',
+          dmg: '25'
+        },
+        position: [0, 1]
+      };
+      var res = reducers.characterReducer(df(character), df(action));
+      expect(res.health).toBe(110);
+      res = reducers.characterReducer(df(character), df({type: 'UPDATE_HP', dHP: -10}));
+      expect(res.health).toBe(90);
+    })
   });
 });
