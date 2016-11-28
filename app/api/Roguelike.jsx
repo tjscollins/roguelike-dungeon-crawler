@@ -1,3 +1,8 @@
+var randomInteger = (max) => {
+  return Math.ceil(Math.random() * max);
+};
+
+/*---------------Map Generation Functions------------------*/
 export var randomLevel = (cols, rows, shouldCreateMap) => {
   var arr = [];
   for (var i = 0; i < cols; i++) {
@@ -387,9 +392,12 @@ var boundary = (X, Y, w, h, i, j) => {
   }
 };
 
-/*-----------------------------------------------*/
+export var populate = (dungeon, depth) => {
+  var {map, boundaries, rooms} = dungeon.levels[depth];
 
-export var populate = (map) => {
+  var monsters = [],
+    healthItems = [],
+    weapon = {};
   var width = map.length;
   var height = map[0].length;
 
@@ -424,12 +432,29 @@ export var populate = (map) => {
               map[i][j] = 9;
               break;
             case 'weapon':
+              var name = '';
+              var dmg = randomInteger(5) + (depth + 1) * 8;
+              var position = [i, j]
+              weapon = {
+                name,
+                dmg,
+                position
+              };
               map[i][j] = 6;
               break;
             case 'mob':
+              var level = randomInteger(3) * depth + 1;
+              var exp = level * 10;
+              var hp = level * 5;
+              var dmg = level * 2;
+              var position = [i, j];
+              monsters.push({level, exp, hp, dmg, position});
               map[i][j] = 4;
               break;
             case 'hpItem':
+              var value = randomInteger(10) * depth + 10;
+              var position = [i, j];
+              healthItems.push({value, position});
               map[i][j] = 5;
               break;
             case 'lava':
@@ -448,9 +473,39 @@ export var populate = (map) => {
       i = 0;
     }
   }
-  return map;
+  dungeon.levels[depth] = {
+    map,
+    boundaries,
+    rooms,
+    monsters,
+    healthItems,
+    weapon
+  }
+  return dungeon;
 };
 
-var randomInteger = (max) => {
-  return Math.ceil(Math.random() * max);
+/*----------------------Game Mechanics Functions---------------------------*/
+
+export var fallIntoWater = (character) => {
+  var {health, xp, depth, weapon, position} = character;
+  return {
+    ...character,
+    health: health - 5,
+    weapon: {
+      ...weapon,
+      dmg: weapon.dmg - 1
+    }
+  };
+};
+
+export var fallIntoLava = (character) => {
+  var {health, xp, depth, weapon, position} = character;
+  return {
+    ...character,
+    health: health - 50,
+    weapon: {
+      weapon: 'Fists',
+      dmg: 5
+    }
+  };
 };

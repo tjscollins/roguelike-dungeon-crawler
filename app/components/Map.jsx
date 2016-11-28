@@ -1,6 +1,7 @@
 var React = require('react');
 var {connect} = require('react-redux');
 var actions = require('actions');
+var Roguelike = require('Roguelike');
 
 export var Map = React.createClass({
   propTypes: {
@@ -9,7 +10,7 @@ export var Map = React.createClass({
   },
   componentWillMount: function() {},
   componentDidMount: function() {
-    var {dungeon, character, dispatch} = this.props;
+    // var {dungeon, character, dispatch} = this.props;
     window.addEventListener('keydown', this.handleKeyPress, true);
   },
   componentWillUnmount: function() {
@@ -47,28 +48,61 @@ export var Map = React.createClass({
   },
   handleKeyPress: function(e) {
     var {character, dungeon, dispatch} = this.props;
-    var {depth} = character;
-    e.preventDefault();
-    console.log('Keypress', e);
+    var {depth, position} = character;
+    // e.preventDefault(); //Commented to allow other keybinds to function normally
+    // console.log('Keypress', e);
     switch (e.keyCode) {
       case 38:
         //Up-Arrow
-        dispatch(actions.moveNorth(character, dungeon.levels[depth]));
+        dispatch(actions.moveNorth(moveInto([
+          position[0], position[1] - 1
+        ]), dungeon.levels[depth]));
         break;
       case 40:
         //Down-Arrow
-        dispatch(actions.moveSouth(character, dungeon.levels[depth]));
+        dispatch(actions.moveSouth(moveInto([
+          position[0], position[1] + 1
+        ]), dungeon.levels[depth]));
         break;
       case 39:
         //Right-Arrow
-        dispatch(actions.moveEast(character, dungeon.levels[depth]));
+        dispatch(actions.moveEast(moveInto([
+          position[0] + 1,
+          position[1]
+        ]), dungeon.levels[depth]));
         break;
       case 37:
         //Left-Arrow
-        dispatch(actions.moveWest(character, dungeon.levels[depth]));
+        dispatch(actions.moveWest(moveInto([
+          position[0] - 1,
+          position[1]
+        ]), dungeon.levels[depth]));
         break;
       default:
-        console.log('Unhandled keypress', e.keyCode);
+        // console.log('Unhandled keypress', e.keyCode);
+    }
+
+    function moveInto(finalPos) {
+      // var {character, dungeon, dispatch} = this.props;
+      // var {depth, position} = character;
+      //Checks the result of character's move and applies relevant game mechanics
+      var terrain = dungeon.levels[depth].map[finalPos[0]][finalPos[1]];
+      switch (terrain) {
+        case 2:
+          return Roguelike.fallIntoWater(character);
+        case 3:
+          return Roguelike.fallIntoLava(character);
+        case 4:
+          return 'mob';
+        case 5:
+          return 'hpitem';
+        case 6:
+          return 'weapon';
+        case 9:
+          return 'downstairs';
+        default:
+          return character;
+      }
     }
   },
   render: function() {

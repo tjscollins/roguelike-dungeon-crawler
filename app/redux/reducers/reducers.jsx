@@ -11,20 +11,7 @@ export var dungeonReducer = (state = {}, action) => {
         ]
       };
     case 'POPULATE_LEVEL':
-      var {levels} = state;
-      return {
-        ...state,
-        levels: levels.map((val, i, arr) => {
-          if (i === action.depth) {
-            return {
-              ...val,
-              map: Roguelike.populate(val.map)
-            };
-          } else {
-            return val;
-          }
-        })
-      };
+      return Roguelike.populate(state, action.depth);
     default:
       return state;
   }
