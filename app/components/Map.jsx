@@ -109,6 +109,7 @@ export var Map = React.createClass({
             return character;
           }
         } else {
+          dispatch(actions.removeDeadMob(depth, finalPos));
           return character;
         }
         break;

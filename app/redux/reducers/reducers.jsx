@@ -16,6 +16,7 @@ export var dungeonReducer = (state = {}, action) => {
       return Roguelike.attackMob(state, action.character, action.monsterPosition);
     case 'REMOVE_DEAD_MOB':
       var {depth, monsterPosition} = action;
+      // console.log(state, depth, monsterPosition);
       var {map} = state.levels[depth];
       var x = monsterPosition[0],
         y = monsterPosition[1];
