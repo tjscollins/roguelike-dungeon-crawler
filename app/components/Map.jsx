@@ -107,11 +107,11 @@ export var Map = React.createClass({
         if (enemy[0]) {
           var dmgTaken = Math.max(0, enemy[0].dmg + Math.ceil(Math.random() * 10) - 5);
           dispatch(actions.updateHP(dmgTaken * -1));
-          if (character.health > 0) {
+          if (this.props.character.health > 0) {
             this.moveInto(finalPos);
           } else {
             //Character Died!
-            return character;
+            return this.props.character;
           }
         } else {
           console.log(exp);
@@ -121,7 +121,12 @@ export var Map = React.createClass({
         }
         break;
       case 5:
-        return 'hpitem';
+        var item = dungeon.levels[depth].healthItems.filter((potion) => {
+          return potion.position[0] === finalPos[0] && potion.position[1] === finalPos[1];
+        })[0];
+        dispatch(actions.updateHP(item.value));
+        dispatch(actions.removeDeadMob(depth, item.position));
+        return this.props.character;
       case 6:
         return 'weapon';
       case 9:
