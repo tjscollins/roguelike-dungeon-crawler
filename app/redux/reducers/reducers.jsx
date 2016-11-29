@@ -16,7 +16,6 @@ export var dungeonReducer = (state = {}, action) => {
       return Roguelike.attackMob(state, action.character, action.monsterPosition);
     case 'REMOVE_DEAD_MOB':
       var {depth, monsterPosition} = action;
-      // console.log(state, depth, monsterPosition);
       var {map} = state.levels[depth];
       var x = monsterPosition[0],
         y = monsterPosition[1];
@@ -105,6 +104,18 @@ export var characterReducer = (state = {}, action) => {
       return {
         ...state,
         health: state.health + action.dHP
+      };
+    case 'UPDATE_XP':
+      var {health, xp} = state;
+      // console.log(health, xp, action.dXP);
+      if (Math.floor(xp / 100) < Math.floor((xp + action.dXP) / 100)) {
+        health = (Math.floor((xp + action.dXP) / 100) + 1) * 20;
+      }
+      xp = xp + action.dXP;
+      return {
+        ...state,
+        xp,
+        health
       };
     default:
       return state;

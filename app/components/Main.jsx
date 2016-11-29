@@ -1,6 +1,6 @@
 var React = require('react');
 var {connect} = require('react-redux');
-var Header = require('Header');
+import Header from 'Header';
 var actions = require('actions');
 import Map from 'Map';
 

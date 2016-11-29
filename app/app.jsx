@@ -11,7 +11,7 @@ var dungeon = {
 };
 
 var character = {
-  health: 100,
+  health: 20,
   xp: 0,
   depth: 0,
   weapon: {

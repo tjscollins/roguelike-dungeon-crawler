@@ -95,22 +95,29 @@ export var Map = React.createClass({
         return Roguelike.fallIntoLava(character);
       case 4:
         console.log('Attacking');
+        var {exp} = dungeon.levels[depth].monsters.filter((mob) => {
+          return mob.position[0] === finalPos[0] && mob.position[1] === finalPos[1];
+        })[0];
+        console.log(exp);
         dispatch(actions.attackMob(character, finalPos));
         var enemy = this.props.dungeon.levels[depth].monsters.filter((mob) => {
           return mob.position[0] === finalPos[0] && mob.position[1] === finalPos[1];
         });
-        console.log(enemy[0]);
+        // console.log(enemy[0]);
         if (enemy[0]) {
           var dmgTaken = Math.max(0, enemy[0].dmg + Math.ceil(Math.random() * 10) - 5);
           dispatch(actions.updateHP(dmgTaken * -1));
           if (character.health > 0) {
             this.moveInto(finalPos);
           } else {
+            //Character Died!
             return character;
           }
         } else {
+          console.log(exp);
           dispatch(actions.removeDeadMob(depth, finalPos));
-          return character;
+          dispatch(actions.updateXP(exp));
+          return this.props.character;
         }
         break;
       case 5:

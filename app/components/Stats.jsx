@@ -7,16 +7,16 @@ var Stats = React.createClass({
     xp: React.PropTypes.number.isRequired,
     dungeonLevel: React.PropTypes.number.isRequired
   },
-  render: function () {
+  render: function() {
     var {health, weapon, xp, dungeonLevel} = this.props;
     return (
       <div>
         <h4>Health: {health}
           &nbsp;Weapon: {weapon.name}
           &nbsp;Attack: {weapon.dmg}
-          &nbsp;Level: {Math.floor(xp / 100)}
+          &nbsp;Level: {Math.floor(xp / 100) + 1}
           &nbsp;Next Level: {100 - xp % 100}
-          &nbsp;Dungeon: {dungeonLevel}</h4>
+          xp &nbsp;Dungeon: {dungeonLevel}</h4>
       </div>
     );
   }

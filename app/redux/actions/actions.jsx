@@ -38,4 +38,8 @@ export var updateHP = (dHP) => {
   return {type: 'UPDATE_HP', dHP};
 };
 
+export var updateXP = (dXP) => {
+  return {type: 'UPDATE_XP', dXP};
+};
+
 export var getEquipment = () => {};

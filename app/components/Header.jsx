@@ -1,18 +1,16 @@
 var React = require('react');
 var Stats = require('Stats');
+var {connect} = require('react-redux');
 
-var Header = React.createClass({
-  render: function () {
-    var weapon = {
-      name: 'Dead Fish',
-      dmg: 25
-    };
+export var Header = React.createClass({
+  render: function() {
+    var {character} = this.props;
     return (
       <div className="container">
         <h1>React Roguelike Test</h1>
         <div className="row">
           <div className="col-xs-10">
-            <Stats health={100} weapon={weapon} xp={250} dungeonLevel={3}/>
+            <Stats health={character.health} weapon={character.weapon} xp={character.xp} dungeonLevel={character.depth + 1}/>
           </div>
           <div className="col-xs-2">
             <button>Toggle Darkness</button>
@@ -23,4 +21,6 @@ var Header = React.createClass({
   }
 });
 
-module.exports = Header;
+export default connect((state) => {
+  return state;
+})(Header);
