@@ -1,4 +1,4 @@
-var randomInteger = (max) => {
+export var randomInteger = (max) => {
   return Math.ceil(Math.random() * max);
 };
 

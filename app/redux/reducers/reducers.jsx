@@ -132,6 +132,11 @@ export var characterReducer = (state = {}, action) => {
       } else {
         return state;
       }
+    case 'UPDATE_DEPTH':
+      return {
+        ...state,
+        depth: action.depth
+      }
     default:
       return state;
   }

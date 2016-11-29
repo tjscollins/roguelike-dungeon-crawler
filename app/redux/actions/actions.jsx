@@ -45,3 +45,7 @@ export var updateXP = (dXP) => {
 export var getEquipment = (weapon) => {
   return {type: 'GET_EQ', weapon};
 };
+
+export var updatedDepth = (depth) => {
+  return {type: 'UPDATE_DEPTH', depth};
+}

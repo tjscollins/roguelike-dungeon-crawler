@@ -132,7 +132,14 @@ export var Map = React.createClass({
         dispatch(actions.removeDeadMob(depth, dungeon.levels[depth].weapon.position));
         return this.props.character;
       case 9:
-        return 'downstairs';
+        var newDepth = depth + 1;
+        console.log(dungeon.levels[newDepth]);
+        if (!dungeon.levels[newDepth]) {
+          dispatch(actions.generateDungeonLevel(Roguelike.randomInteger(50) + 25, Roguelike.randomInteger(50) + 25));
+          dispatch(actions.populateLevel(newDepth));
+        }
+        dispatch(actions.updatedDepth(newDepth));
+        return this.props.character;
       default:
         return character;
     }
