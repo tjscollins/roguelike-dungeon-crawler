@@ -1,8 +1,8 @@
 .square {
-    border: 1px solid grey;
-    background: black;
-    width: 15px;
-    height: 15px;
+    border: none;
+    background: grey;
+    width: 25px;
+    height: 25px;
     margin: -1px;
     float: left;
 }
@@ -15,11 +15,12 @@
 .ground {
     @extend .square;
     background: white;
+    // background-image: url('./images/dc-dngn/floor/cobble_blood3.png');
 }
 
 .player-start {
     @extend .square;
-    background: white;
+    background: lightgreen;
 }
 
 .player-pos {
@@ -30,11 +31,13 @@
 .water {
     @extend .square;
     background: lightblue;
+    // background-image: url('./images/dc-dngn/water/dngn_shallow_water.png');
 }
 
 .lava {
     @extend .square;
     background: red;
+    // background-image: url('./images/dc-dngn/floor/lava1.png');
 }
 
 .weapon {
@@ -45,11 +48,13 @@
 .mob {
     @extend .square;
     background: magenta;
+    // background-image: url('./images/dc-mon/draco/draco-base-pale.png');
 }
 
 .hpitem {
     @extend .square;
-    background: green;
+    background: green
+    // background-image: url('./images/item/potion/clear.png');
 }
 
 .downstairs {

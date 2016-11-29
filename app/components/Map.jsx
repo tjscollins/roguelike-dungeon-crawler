@@ -41,7 +41,7 @@ export var Map = React.createClass({
       case 9:
         return 'downstairs';
       case 10:
-        return 'player-start';
+        return 'player-start'; //upstairs
       default:
         return 'square';
     }
@@ -140,6 +140,12 @@ export var Map = React.createClass({
         }
         dispatch(actions.updatedDepth(newDepth));
         return this.props.character;
+      case 10:
+        if (depth !== 0) {
+          var newDepth = depth - 1;
+          dispatch(actions.updatedDepth(newDepth));
+          return this.props.character;
+        }
       default:
         return character;
     }

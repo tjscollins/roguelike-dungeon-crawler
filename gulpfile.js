@@ -7,12 +7,19 @@ var plumber = require('gulp-plumber');
 var sourcemaps = require('gulp-sourcemaps');
 var sass = require('gulp-sass');
 // var webpack = require('gulp-webpack');
+var del = require('del');
 
 //File Paths
 const SRC_PATH = './app/';
 const DIST_PATH = './public/';
 const SCRIPTS_PATH = ['./public/bundle.js'];
 const SCSS_PATH = 'app/styles/**/*.scss';
+const IMG_PATH = 'tileset/**/*png';
+
+//image-compression
+var imagemin = require('gulp-imagemin');
+var imageminPngquant = require('imagemin-pngquant');
+var imageminJpegRecompress = require('imagemin-jpeg-recompress');
 
 // Bootstrap scss source
 var bootstrapSass = { in: './node_modules/bootstrap-sass/'
@@ -71,20 +78,29 @@ gulp.task('scripts', function() {
 
 // Images
 gulp.task('images', function() {
-  console.log('starting images task');
+  return gulp.src(IMG_PATH).pipe(imagemin([
+    imagemin.gifsicle(),
+    imagemin.jpegtran(),
+    imagemin.optipng(),
+    imagemin.svgo(),
+    imageminPngquant(),
+    imageminJpegRecompress()
+  ])).pipe(gulp.dest(DIST_PATH + '/images'));
+});
+
+gulp.task('clean', function() {
+  return del.sync([DIST_PATH]);
 });
 
 gulp.task('default', [
   'styles', 'scripts'
 ], function() {
-  // console.log('Starting default task');
+  console.log('Starting default task');
 });
 
 gulp.task('watch', ['default'], function() {
-  // console.log('Starting watch task');
   require('./server.js');
   livereload.listen();
   gulp.watch(SCRIPTS_PATH, ['scripts']);
-  // gulp.watch(CSS_PATH, ['styles']);
   gulp.watch(SCSS_PATH, ['styles']);
 });
