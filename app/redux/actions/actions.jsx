@@ -42,4 +42,6 @@ export var updateXP = (dXP) => {
   return {type: 'UPDATE_XP', dXP};
 };
 
-export var getEquipment = () => {};
+export var getEquipment = (weapon) => {
+  return {type: 'GET_EQ', weapon};
+};

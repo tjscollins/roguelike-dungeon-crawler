@@ -94,11 +94,11 @@ export var Map = React.createClass({
       case 3:
         return Roguelike.fallIntoLava(character);
       case 4:
-        console.log('Attacking');
+        // console.log('Attacking');
         var {exp} = dungeon.levels[depth].monsters.filter((mob) => {
           return mob.position[0] === finalPos[0] && mob.position[1] === finalPos[1];
         })[0];
-        console.log(exp);
+        // console.log(exp);
         dispatch(actions.attackMob(character, finalPos));
         var enemy = this.props.dungeon.levels[depth].monsters.filter((mob) => {
           return mob.position[0] === finalPos[0] && mob.position[1] === finalPos[1];
@@ -128,7 +128,9 @@ export var Map = React.createClass({
         dispatch(actions.removeDeadMob(depth, item.position));
         return this.props.character;
       case 6:
-        return 'weapon';
+        dispatch(actions.getEquipment(dungeon.levels[depth].weapon));
+        dispatch(actions.removeDeadMob(depth, dungeon.levels[depth].weapon.position));
+        return this.props.character;
       case 9:
         return 'downstairs';
       default:

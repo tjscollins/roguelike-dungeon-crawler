@@ -1,25 +1,23 @@
 var React = require('react');
+var {connect} = require('react-redux');
 
 var Stats = React.createClass({
-  propTypes: {
-    health: React.PropTypes.number.isRequired,
-    weapon: React.PropTypes.object.isRequired,
-    xp: React.PropTypes.number.isRequired,
-    dungeonLevel: React.PropTypes.number.isRequired
-  },
   render: function() {
-    var {health, weapon, xp, dungeonLevel} = this.props;
+    var {character} = this.props;
+    var {health, maxHealth, weapon, depth, xp} = character;
     return (
       <div>
-        <h4>Health: {health}
+        <h4>Health: {health}/{maxHealth}
           &nbsp;Weapon: {weapon.name}
           &nbsp;Attack: {weapon.dmg}
           &nbsp;Level: {Math.floor(xp / 100) + 1}
           &nbsp;Next Level: {100 - xp % 100}
-          xp &nbsp;Dungeon: {dungeonLevel}</h4>
+          xp &nbsp;Dungeon Level: {depth + 1}</h4>
       </div>
     );
   }
 });
 
-module.exports = Stats;
+export default connect((state) => {
+  return state;
+})(Stats);

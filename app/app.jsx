@@ -12,11 +12,12 @@ var dungeon = {
 
 var character = {
   health: 20,
+  maxHealth: 20,
   xp: 0,
   depth: 0,
   weapon: {
-    name: 'Dead Fish',
-    dmg: '25'
+    name: 'Fists',
+    dmg: '5'
   },
   position: [0, 0]
 };

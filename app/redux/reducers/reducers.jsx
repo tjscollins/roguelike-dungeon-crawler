@@ -77,7 +77,7 @@ export var characterReducer = (state = {}, action) => {
     case 'MOVE_EAST':
       var x = action.character.position[0],
         y = action.character.position[1];
-      var position = y < action.level.map.length && action.level.map[x + 1][y] !== 0
+      var position = x < action.level.map.length && action.level.map[x + 1][y] !== 0
         ? [
           x + 1,
           y
@@ -101,22 +101,37 @@ export var characterReducer = (state = {}, action) => {
         position
       };
     case 'UPDATE_HP':
+      var {health, maxHealth} = state;
+      var newHealth = health + action.dHP;
       return {
         ...state,
-        health: state.health + action.dHP
+        health: newHealth > maxHealth
+          ? maxHealth
+          : newHealth
       };
     case 'UPDATE_XP':
-      var {health, xp} = state;
+      var {health, xp, maxHealth} = state;
       // console.log(health, xp, action.dXP);
       if (Math.floor(xp / 100) < Math.floor((xp + action.dXP) / 100)) {
         health = (Math.floor((xp + action.dXP) / 100) + 1) * 20;
+        maxHealth = health;
       }
       xp = xp + action.dXP;
       return {
         ...state,
         xp,
-        health
+        health,
+        maxHealth
       };
+    case 'GET_EQ':
+      if (action.weapon.dmg > state.weapon.dmg) {
+        return {
+          ...state,
+          weapon: action.weapon
+        };
+      } else {
+        return state;
+      }
     default:
       return state;
   }
