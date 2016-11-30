@@ -7,6 +7,8 @@ var actions = require('actions');
 
 //Create Initial State
 var dungeon = {
+  allVisible: false,
+  victory: false,
   levels: []
 };
 

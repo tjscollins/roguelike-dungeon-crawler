@@ -7,8 +7,7 @@ import Map from 'Map';
 export var Main = React.createClass({
   propTypes: {
     dungeon: React.PropTypes.object.isRequired,
-    character: React.PropTypes.object.isRequired,
-    dispatch: React.PropTypes.function
+    character: React.PropTypes.object.isRequired
   },
   componentWillMount: function() {
     var {dungeon, character, dispatch} = this.props;

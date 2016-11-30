@@ -1,10 +1,15 @@
 .square {
     border: none;
     background: grey;
-    width: 25px;
-    height: 25px;
+    width: 20px;
+    height: 20px;
     margin: -1px;
     float: left;
+}
+
+.darkness {
+  @extend .square;
+  background: black;
 }
 
 .hallway {

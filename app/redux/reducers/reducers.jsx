@@ -26,6 +26,11 @@ export var dungeonReducer = (state = {}, action) => {
           map: map.slice(0, x).concat([map[x].slice(0, y).concat([1]).concat(map[x].slice(y + 1))]).concat(map.slice(x + 1))
         })
       };
+    case 'TOGGLE_DARKNESS':
+      return {
+        ...state,
+        allVisible: !state.allVisible
+      };
     default:
       return state;
   }

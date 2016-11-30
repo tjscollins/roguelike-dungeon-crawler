@@ -89,7 +89,7 @@ gulp.task('images', function() {
 });
 
 gulp.task('clean', function() {
-  return del.sync([DIST_PATH]);
+  return del.sync([DIST_PATH + '/**/']);
 });
 
 gulp.task('default', [

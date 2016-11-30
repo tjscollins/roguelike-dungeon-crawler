@@ -17,11 +17,14 @@ export var Map = React.createClass({
     window.removeEventListener('keydown', this.handleKeyPress, true);
   },
   gridClass: function(level, x, y) {
-    var {character} = this.props;
+    var {character, dungeon} = this.props;
     if (character.position[0] === x && character.position[1] === y) {
       return 'player-pos';
     }
-    switch (level[x][y]) {
+    var distance = Math.pow(Math.abs(character.position[0] - x), 2) + Math.pow(Math.abs(character.position[1] - y), 2);
+    switch ((!dungeon.allVisible && distance >= 25) || level[x][y]) {
+      case true:
+        return 'darkness';
       case 0:
         return 'square';
       case 1:

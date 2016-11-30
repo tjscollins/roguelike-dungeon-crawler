@@ -10,6 +10,10 @@ export var placeCharacterStart = (character, level) => {
   return {type: 'PLACE_CHARACTER_START', character, level};
 };
 
+export var toggleDarkness = () => {
+  return {type: 'TOGGLE_DARKNESS'}
+}
+
 export var moveNorth = (character, level) => {
   return {type: 'MOVE_NORTH', character, level};
 };
