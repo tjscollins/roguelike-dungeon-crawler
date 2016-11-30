@@ -155,15 +155,59 @@ export var Map = React.createClass({
   },
   render: function() {
     var {dungeon, character, dispatch} = this.props;
+    var {position} = character;
     var that = this;
     function grid(depth) {
       var cols = dungeon.levels[depth].map.length;
       var rows = dungeon.levels[depth].map[0].length;
-      var gridDivs = [];
-      for (var i = 0; i < rows; i++) {
+      var gridDivs = [],
+        yRange = [];
+      var yDiffs = [
+        position[1], rows - position[1]
+      ];
+      //Implicit assumption that map is always 50x50 or larger
+      //The viewable portion of the map is meant to be 50x50 always
+      if (yDiffs[0] < 50) {
+        yRange = [
+          0,
+          Math.min(rows, 50)
+        ];
+      } else if (yDiffs[1] < 50) {
+        yRange = [
+          Math.max(0, rows - 50),
+          rows
+        ];
+      } else {
+        yRange = [
+          position[1] - 25,
+          position[1] + 25
+        ];
+      }
+      for (var i = yRange[0]; i < yRange[1]; i++) {
+        // for (var i = 0; i < rows; i++) {
         var rowHTML = (xnum, ynum) => {
-          var row = [];
-          for (var j = 0; j < xnum; j++) {
+          var row = [],
+            xRange = [];
+          var xDiffs = [
+            position[0], xnum - position[0]
+          ];
+          if (xDiffs[0] < 50) {
+            xRange = [
+              0,
+              Math.min(xnum, 50)
+            ];
+          } else if (xDiffs[1] < 50) {
+            xRange = [
+              Math.max(0, xnum - 50),
+              xnum
+            ];
+          } else {
+            xRange = [
+              position[0] - 25,
+              position[0] + 25
+            ];
+          }
+          for (var j = xRange[0]; j < xRange[1]; j++) {
             row[j] = <div key={j + 'x' + ynum} className={that.gridClass(dungeon.levels[depth].map, j, ynum)}/>;
           }
           return row;
@@ -173,7 +217,7 @@ export var Map = React.createClass({
       return gridDivs;
     }
     return (
-      <div onKeyPress={this.handleKeyPress} className="container">
+      <div onKeyPress={this.handleKeyPress} className="container .Map">
         {grid(character.depth)}
       </div>
     );
