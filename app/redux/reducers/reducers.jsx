@@ -53,6 +53,9 @@ export var characterReducer = (state = {}, action) => {
           }
         }
       }
+      if (x === 0 && y === 0 && action.level.map[0][0] !== 10) {
+        throw new Error('Starting position not found');
+      }
       return {
         ...state,
         position: [x, y]

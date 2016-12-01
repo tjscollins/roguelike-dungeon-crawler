@@ -94,7 +94,7 @@ var randomRoom = (level, terrain, count) => {
 
 var itFits = (level, direction, terrain) => {
   //Checking to see if TERRAIN feature will fit in that DIRECTION on the LEVEL
-  var {map, rooms, boundaries} = level;
+  var {map, boundaries} = level;
   //Filter boundaries to keep only appropriate DIRECTION
   var bounds = boundaries.filter((cell) => {
     return cell[2] === direction;
@@ -400,8 +400,14 @@ export var populate = (dungeon, depth) => {
     weapon = {};
   var width = map.length;
   var height = map[0].length;
-
-  var supply = ['downstairs', 'weapon'];
+  var bossLevel = depth > 2
+    ? randomInteger(2) > 1
+      ? true
+      : false
+    : false;
+  var supply = bossLevel
+    ? ['boss', 'weapon']
+    : ['downstairs', 'weapon'];
   var mob = randomInteger(10) + 10,
     hpItem = randomInteger(6) + 3,
     lava = randomInteger(20) + 10,
@@ -462,6 +468,15 @@ export var populate = (dungeon, depth) => {
               break;
             case 'water':
               map[i][j] = 2;
+              break;
+            case 'boss':
+              var level = randomInteger(5) * depth + 1;
+              var exp = level * 25;
+              var hp = level * 10;
+              var dmg = level * 4;
+              var position = [i, j];
+              map[i][j] = 11;
+              monsters.push({level, exp, hp, dmg, position});
               break;
             default:
           }
@@ -526,8 +541,8 @@ export var fallIntoLava = (character) => {
 };
 
 export var attackMob = (dungeon, character, monsterPosition) => {
-  var {health, weapon, xp, depth, position} = character;
-  var {map, monsters} = dungeon.levels[depth];
+  var {weapon, depth} = character;
+  var {monsters} = dungeon.levels[depth];
   var enemy = monsters.filter((mob) => {
     return mob.position[0] === monsterPosition[0] && mob.position[1] === monsterPosition[1];
   });
@@ -562,5 +577,3 @@ export var attackMob = (dungeon, character, monsterPosition) => {
     };
   }
 };
-
-export var encounterMonster = (character, dungeon, monsterPosition) => {}

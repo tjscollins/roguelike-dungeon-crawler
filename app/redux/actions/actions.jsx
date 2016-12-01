@@ -38,7 +38,7 @@ export var attackMob = (character, monsterPosition) => {
   return {type: 'ATTACK_MOB', character, monsterPosition};
 };
 
-export var removeDeadMob = (depth, monsterPosition) => {
+export var clearPosition = (depth, monsterPosition) => {
   return {type: 'REMOVE_DEAD_MOB', depth, monsterPosition};
 };
 

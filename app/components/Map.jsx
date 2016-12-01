@@ -7,11 +7,11 @@ var $ = require('jquery');
 export var Map = React.createClass({
   propTypes: {
     dungeon: React.PropTypes.object.isRequired,
-    character: React.PropTypes.object.isRequired
+    character: React.PropTypes.object.isRequired,
+    dispatch: React.PropTypes.func.isRequired
   },
   componentWillMount: function() {},
   componentDidMount: function() {
-    // var {dungeon, character, dispatch} = this.props;
     window.addEventListener('keydown', this.handleKeyPress, true);
   },
   componentWillUnmount: function() {
@@ -46,6 +46,8 @@ export var Map = React.createClass({
         return 'downstairs';
       case 10:
         return 'player-start'; //upstairs
+      case 11:
+        return 'boss';
       default:
         return 'square';
     }
@@ -89,7 +91,7 @@ export var Map = React.createClass({
 
   moveInto: function(finalPos) {
     var {character, dungeon, dispatch} = this.props;
-    var {depth, position} = character;
+    var {depth} = character;
     //Checks the result of character's move and applies relevant game mechanics
     var terrain = dungeon.levels[depth].map[finalPos[0]][finalPos[1]];
     switch (terrain) {
@@ -111,7 +113,7 @@ export var Map = React.createClass({
         });
         // console.log(enemy[0]);
         if (enemy[0]) {
-          var dmgTaken = Math.max(0, enemy[0].dmg + Math.ceil(Math.random() * 10) - 5);
+          var dmgTaken = Math.max(0, enemy[0].dmg + Math.ceil(Math.random() * 10) - character.level);
           dispatch(actions.updateHP(dmgTaken * -1));
           if (this.props.character.health > 0) {
             this.moveInto(finalPos);
@@ -121,7 +123,7 @@ export var Map = React.createClass({
           }
         } else {
           console.log(exp);
-          dispatch(actions.removeDeadMob(depth, finalPos));
+          dispatch(actions.clearPosition(depth, finalPos));
           dispatch(actions.updateXP(exp));
           return this.props.character;
         }
@@ -131,11 +133,11 @@ export var Map = React.createClass({
           return potion.position[0] === finalPos[0] && potion.position[1] === finalPos[1];
         })[0];
         dispatch(actions.updateHP(item.value));
-        dispatch(actions.removeDeadMob(depth, item.position));
+        dispatch(actions.clearPosition(depth, item.position));
         return this.props.character;
       case 6:
         dispatch(actions.getEquipment(dungeon.levels[depth].weapon));
-        dispatch(actions.removeDeadMob(depth, dungeon.levels[depth].weapon.position));
+        dispatch(actions.clearPosition(depth, dungeon.levels[depth].weapon.position));
         return this.props.character;
       case 9:
         var newDepth = depth + 1;
@@ -152,12 +154,15 @@ export var Map = React.createClass({
           dispatch(actions.updatedDepth(newDepth));
           return this.props.character;
         }
+        break;
+      case 11:
+        break;
       default:
         return character;
     }
   },
   render: function() {
-    var {dungeon, character, dispatch} = this.props;
+    var {dungeon, character} = this.props;
     var {position} = character;
     var that = this;
     function grid(depth) {
