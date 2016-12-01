@@ -27,7 +27,7 @@ var character = {
 var store = require('configureStore').configure({dungeon, character});
 
 //Generate Dungeon
-store.dispatch(actions.generateDungeonLevel(75, 60));
+store.dispatch(actions.generateDungeonLevel(100, 100));
 
 //Populate Dungeon
 store.dispatch(actions.populateLevel(0));

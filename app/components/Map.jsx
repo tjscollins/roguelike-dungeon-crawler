@@ -167,12 +167,12 @@ export var Map = React.createClass({
       ];
       //Implicit assumption that map is always 50x50 or larger
       //The viewable portion of the map is meant to be 50x50 always
-      if (yDiffs[0] < 50) {
+      if (yDiffs[0] < 25) {
         yRange = [
           0,
           Math.min(rows, 50)
         ];
-      } else if (yDiffs[1] < 50) {
+      } else if (yDiffs[1] < 25) {
         yRange = [
           Math.max(0, rows - 50),
           rows
@@ -191,12 +191,12 @@ export var Map = React.createClass({
           var xDiffs = [
             position[0], xnum - position[0]
           ];
-          if (xDiffs[0] < 50) {
+          if (xDiffs[0] < 25) {
             xRange = [
               0,
               Math.min(xnum, 50)
             ];
-          } else if (xDiffs[1] < 50) {
+          } else if (xDiffs[1] < 25) {
             xRange = [
               Math.max(0, xnum - 50),
               xnum
