@@ -11,8 +11,12 @@ export var placeCharacterStart = (character, level) => {
 };
 
 export var toggleDarkness = () => {
-  return {type: 'TOGGLE_DARKNESS'}
-}
+  return {type: 'TOGGLE_DARKNESS'};
+};
+
+export var resetDungeon = () => {
+  return {type: 'RESET_DUNGEON'};
+};
 
 export var moveNorth = (character, level) => {
   return {type: 'MOVE_NORTH', character, level};
@@ -52,4 +56,8 @@ export var getEquipment = (weapon) => {
 
 export var updatedDepth = (depth) => {
   return {type: 'UPDATE_DEPTH', depth};
-}
+};
+
+export var resetCharacter = () => {
+  return {type: 'RESET_CHARACTER'};
+};

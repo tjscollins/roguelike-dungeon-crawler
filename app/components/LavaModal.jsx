@@ -5,11 +5,11 @@ var LavaModal = () => {
     var int = Math.ceil(Math.random() * 3);
     switch (int) {
       case 1:
-        return {title: 'A sinkhole opens up!', text: 'Unprepared for the sudden dip you find yourself weakened by the cold, deathly chill of the water.  You climb out, but you know you\'ll be less effective in combat...'};
+        return {title: 'A volcanic eruption!', text: 'The fires of this mountain are legendary--and so are the burns you received when the floor melted beneath your feet and gave way to liquid-hot magma.'};
       case 2:
-        return {title: 'Man-eating Piranhas!', text: 'The puddle looked safe enough, but as you swim across it you realize you are not alone.  You survive the pesky little nibblers, but the bleeding wounds they left behind are sure to attract the monsters in the dark...'};
+        return {title: 'Just Jump!', text: '"It\'s not much bigger than the fesetival mudpits back home," you tried to tell yourself.  "Just Jump!"  And so you did.  It will take powerful magic to heal these scars now.'};
       case 3:
-        return {title: 'Cenote', text: 'The deep, dark water looked refreshing, until you noticed the piles of bones at the bottom and the sacrifical altar on the shore. Shaken and afraid, you clamber out the other side, unready for what lies ahead in the dark...'};
+        return {title: 'Virgins Only', text: 'The fire gods are fickle, and dislike the taste of impure flesh.  Fortunately they have spit you back out again, much less than you were.'};
     }
   };
   var lava = randomLava();
@@ -27,7 +27,7 @@ var LavaModal = () => {
             <p>{lava.text}</p>
           </div>
           <div className="modal-footer">
-            <button type="button" className="btn btn-secondary" data-dismiss="modal">Continue in Your Weakened State</button>
+            <button type="button" className="btn btn-secondary" data-dismiss="modal">Your Equipment is Melted and the Pain is Excruciating</button>
           </div>
         </div>
       </div>

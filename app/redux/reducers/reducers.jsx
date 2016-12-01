@@ -31,6 +31,8 @@ export var dungeonReducer = (state = {}, action) => {
         ...state,
         allVisible: !state.allVisible
       };
+    case 'RESET_DUNGEON':
+      return {allVisible: false, victory: false, levels: []};
     default:
       return state;
   }
@@ -141,7 +143,19 @@ export var characterReducer = (state = {}, action) => {
       return {
         ...state,
         depth: action.depth
-      }
+      };
+    case 'RESET_CHARACTER':
+      return {
+        health: 20,
+        maxHealth: 20,
+        xp: 0,
+        depth: 0,
+        weapon: {
+          name: 'Fists',
+          dmg: '5'
+        },
+        position: [0, 0]
+      };
     default:
       return state;
   }

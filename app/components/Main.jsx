@@ -2,9 +2,11 @@ var React = require('react');
 var {connect} = require('react-redux');
 import Header from 'Header';
 var actions = require('actions');
+var $ = require('jquery');
 import Map from 'Map';
 import WaterModal from 'WaterModal';
 import LavaModal from 'LavaModal';
+import DeathModal from 'DeathModal';
 
 export var Main = React.createClass({
   propTypes: {
@@ -16,10 +18,15 @@ export var Main = React.createClass({
     dispatch(actions.placeCharacterStart(character, dungeon.levels[0]));
   },
   render: function() {
+    var {character, dispatch} = this.props;
+    if (character.health < 0) {
+      $('#Death-Modal').modal('toggle');
+    }
     return (
       <div>
         <Header/>
         <Map/>
+        <DeathModal/>
         <WaterModal/>
         <LavaModal/>
       </div>
