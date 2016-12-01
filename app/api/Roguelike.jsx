@@ -410,12 +410,12 @@ var populate = (dLevel, depth) => {
     weapon = {};
   var width = map.length;
   var height = map[0].length;
-  var startSet = false;
-  var bossLevel = depth > 2
-    ? randomInteger(2) > 1
-      ? true
-      : false
-    : false;
+  var bossLevel = true;
+  // depth > 2
+  //   ? randomInteger(2) > 1
+  //     ? true
+  //     : false
+  //   : false;
   var supply = bossLevel
     ? ['boss', 'weapon']
     : ['downstairs', 'weapon'];
@@ -559,7 +559,6 @@ export var attackMob = (dungeon, character, monsterPosition) => {
     return mob.position[0] === monsterPosition[0] && mob.position[1] === monsterPosition[1];
   });
   var index = monsters.indexOf(enemy[0]);
-
   var hp = enemy[0].hp - Math.max(0, weapon.dmg - 5 + randomInteger(10));
 
   if (hp > 0) {

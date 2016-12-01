@@ -121,7 +121,7 @@ export var Map = React.createClass({
         });
         // console.log(enemy[0]);
         if (enemy[0]) {
-          var dmgTaken = Math.max(0, enemy[0].dmg + Math.ceil(Math.random() * 10) - character.level);
+          var dmgTaken = Math.max(0, enemy[0].dmg + Math.ceil(Math.random() * 10) - Math.floor(character.xp / 100));
           dispatch(actions.updateHP(dmgTaken * -1));
           if (this.props.character.health > 0) {
             this.moveInto(finalPos);
@@ -130,7 +130,7 @@ export var Map = React.createClass({
             return this.props.character;
           }
         } else {
-          console.log(exp);
+          // console.log(exp);
           dispatch(actions.clearPosition(depth, finalPos));
           dispatch(actions.updateXP(exp));
           return this.props.character;
@@ -164,6 +164,32 @@ export var Map = React.createClass({
         }
         break;
       case 11:
+        // console.log('Attacking');
+        var {exp} = dungeon.levels[depth].monsters.filter((mob) => {
+          return mob.position[0] === finalPos[0] && mob.position[1] === finalPos[1];
+        })[0];
+        // console.log(exp);
+        dispatch(actions.attackMob(character, finalPos));
+        var enemy = this.props.dungeon.levels[depth].monsters.filter((mob) => {
+          return mob.position[0] === finalPos[0] && mob.position[1] === finalPos[1];
+        });
+        // console.log(enemy[0]);
+        if (enemy[0]) {
+          var dmgTaken = Math.max(0, enemy[0].dmg + Math.ceil(Math.random() * 10) - Math.floor(character.xp / 100));
+          dispatch(actions.updateHP(dmgTaken * -1));
+          if (this.props.character.health > 0) {
+            this.moveInto(finalPos);
+          } else {
+            //Character Died!
+            return this.props.character;
+          }
+        } else {
+          // console.log(exp);
+          dispatch(actions.clearPosition(depth, finalPos));
+          dispatch(actions.updateXP(exp));
+          $('#Boss-Modal').modal('toggle');
+          return this.props.character;
+        }
         break;
       default:
         return character;
