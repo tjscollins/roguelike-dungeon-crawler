@@ -3,6 +3,10 @@ var {connect} = require('react-redux');
 var actions = require('actions');
 
 export var DeathModal = React.createClass({
+  propTypes: {
+    dungeon: React.PropTypes.object.isRequired,
+    dispatch: React.PropTypes.func.isRequired
+  },
   render: function() {
     var {dispatch, dungeon} = this.props;
     var reset = () => {
@@ -10,7 +14,6 @@ export var DeathModal = React.createClass({
       dispatch(actions.resetDungeon());
       dispatch(actions.generateDungeonLevel(100, 100));
       dispatch(actions.populateLevel(0));
-      dispatch(actions.placeCharacterStart(dungeon.levels[0]));
     };
     return (
       <div id="Death-Modal" className="modal fade">

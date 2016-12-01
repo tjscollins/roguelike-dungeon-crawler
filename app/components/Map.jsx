@@ -10,7 +10,15 @@ export var Map = React.createClass({
     character: React.PropTypes.object.isRequired,
     dispatch: React.PropTypes.func.isRequired
   },
-  componentWillMount: function() {},
+  componentWillMount: function() {
+    var {position, depth} = this.props.character;
+    var {dungeon, dispatch} = this.props;
+    console.log('Map Will Mount');
+    console.log({dungeon, depth, position});
+    if (position[0] === 0 && position[1] === 0 && dungeon.levels[depth].map[0][0] !== 10) {
+      dispatch(actions.placeCharacterStart(depth));
+    }
+  },
   componentDidMount: function() {
     window.addEventListener('keydown', this.handleKeyPress, true);
   },
@@ -146,12 +154,12 @@ export var Map = React.createClass({
           dispatch(actions.generateDungeonLevel(Roguelike.randomInteger(50) + 25, Roguelike.randomInteger(50) + 25));
           dispatch(actions.populateLevel(newDepth));
         }
-        dispatch(actions.updatedDepth(newDepth));
+        dispatch(actions.updateDepth(newDepth));
         return this.props.character;
       case 10:
         if (depth !== 0) {
           var newDepth = depth - 1;
-          dispatch(actions.updatedDepth(newDepth));
+          dispatch(actions.updateDepth(newDepth));
           return this.props.character;
         }
         break;
@@ -162,7 +170,7 @@ export var Map = React.createClass({
     }
   },
   render: function() {
-    var {dungeon, character} = this.props;
+    var {dungeon, character, dispatch} = this.props;
     var {position} = character;
     var that = this;
     function grid(depth) {

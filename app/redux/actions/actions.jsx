@@ -39,7 +39,7 @@ export var attackMob = (character, monsterPosition) => {
 };
 
 export var clearPosition = (depth, monsterPosition) => {
-  return {type: 'REMOVE_DEAD_MOB', depth, monsterPosition};
+  return {type: 'CLEAR_POSITION', depth, monsterPosition};
 };
 
 export var updateHP = (dHP) => {
@@ -54,7 +54,7 @@ export var getEquipment = (weapon) => {
   return {type: 'GET_EQ', weapon};
 };
 
-export var updatedDepth = (depth) => {
+export var updateDepth = (depth) => {
   return {type: 'UPDATE_DEPTH', depth};
 };
 

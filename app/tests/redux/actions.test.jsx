@@ -32,6 +32,22 @@ describe('actions', () => {
     expect(res).toEqual(action);
   });
 
+  it('should generate the TOGGLE_DARKNESS action', () => {
+    var action = {
+      type: 'TOGGLE_DARKNESS'
+    };
+    var res = actions.toggleDarkness();
+    expect(res).toEqual(action);
+  });
+
+  it('should generate the RESET_DUNGEON action', () => {
+    var action = {
+      type: 'RESET_DUNGEON'
+    };
+    var res = actions.resetDungeon();
+    expect(res).toEqual(action);
+  });
+
   it('should generate the MOVE_NORTH action', () => {
     var action = {
       type: 'MOVE_NORTH',
@@ -79,6 +95,60 @@ describe('actions', () => {
       monsterPosition: 'monsterPosition'
     };
     var res = actions.attackMob('character', 'monsterPosition');
+    expect(res).toEqual(action);
+  });
+
+  it('should generate the CLEAR_POSITION action', () => {
+    var action = {
+      type: 'CLEAR_POSITION',
+      depth: 'depth',
+      monsterPosition: 'monsterPosition'
+    };
+    var res = actions.clearPosition('depth', 'monsterPosition');
+    expect(res).toEqual(action);
+  });
+
+  it('should generate the UPDATE_HP action', () => {
+    var action = {
+      type: 'UPDATE_HP',
+      dHP: 'dHP'
+    };
+    var res = actions.updateHP('dHP');
+    expect(res).toEqual(action);
+  });
+
+  it('should generate the UPDATE_XP action', () => {
+    var action = {
+      type: 'UPDATE_XP',
+      dXP: 'dXP'
+    };
+    var res = actions.updateXP('dXP');
+    expect(res).toEqual(action);
+  });
+
+  it('should generate the GET_EQ action', () => {
+    var action = {
+      type: 'GET_EQ',
+      weapon: 'weapon'
+    };
+    var res = actions.getEquipment('weapon');
+    expect(res).toEqual(action);
+  });
+
+  it('should generate the UPDATE_DEPTH action', () => {
+    var action = {
+      type: 'UPDATE_DEPTH',
+      depth: 'depth'
+    };
+    var res = actions.updateDepth('depth');
+    expect(res).toEqual(action);
+  });
+
+  it('should generate the RESET_CHARACTER action', () => {
+    var action = {
+      type: 'RESET_CHARACTER'
+    };
+    var res = actions.resetCharacter();
     expect(res).toEqual(action);
   });
 });
