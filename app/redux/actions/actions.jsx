@@ -1,13 +1,13 @@
-export var generateDungeonLevel = (cols, rows) => {
-  return {type: 'GENERATE_DUNGEON_LEVEL', cols, rows};
+export var generateDungeonLevel = (cols, rows, depth) => {
+  return {type: 'GENERATE_DUNGEON_LEVEL', cols, rows, depth};
 };
 
-export var populateLevel = (depth) => {
-  return {type: 'POPULATE_LEVEL', depth};
-};
+// export var populateLevel = (depth) => {
+//   return {type: 'POPULATE_LEVEL', depth};
+// };
 
-export var placeCharacterStart = (character, level) => {
-  return {type: 'PLACE_CHARACTER_START', character, level};
+export var placeCharacterStart = (level) => {
+  return {type: 'PLACE_CHARACTER_START', level};
 };
 
 export var toggleDarkness = () => {

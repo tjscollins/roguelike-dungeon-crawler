@@ -10,17 +10,16 @@ export var Map = React.createClass({
     character: React.PropTypes.object.isRequired,
     dispatch: React.PropTypes.func.isRequired
   },
-  componentWillMount: function() {
-    var {position, depth} = this.props.character;
-    var {dungeon, dispatch} = this.props;
-    console.log('Map Will Mount');
-    console.log({dungeon, depth, position});
-    if (position[0] === 0 && position[1] === 0 && dungeon.levels[depth].map[0][0] !== 10) {
-      dispatch(actions.placeCharacterStart(depth));
-    }
-  },
   componentDidMount: function() {
     window.addEventListener('keydown', this.handleKeyPress, true);
+  },
+  componentDidUpdate: function() {
+    var {dispatch} = this.props;
+    var {dungeon, character} = this.props;
+    var {position, depth} = character;
+    if (position[0] === 0 && position[1] === 0 && dungeon.levels[depth].map[0][0] !== 10) {
+      dispatch(actions.placeCharacterStart(dungeon.levels[depth]));
+    }
   },
   componentWillUnmount: function() {
     window.removeEventListener('keydown', this.handleKeyPress, true);
@@ -198,6 +197,7 @@ export var Map = React.createClass({
           position[1] + 25
         ];
       }
+      console.log('yRange', yRange);
       for (var i = yRange[0]; i < yRange[1]; i++) {
         var rowHTML = (xnum, ynum) => {
           var row = [],
@@ -221,6 +221,7 @@ export var Map = React.createClass({
               position[0] + 25
             ];
           }
+          console.log('xRange', xRange);
           for (var j = xRange[0]; j < xRange[1]; j++) {
             row[j] = <div key={j + 'x' + ynum} className={that.gridClass(dungeon.levels[depth].map, j, ynum)}/>;
           }

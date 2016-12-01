@@ -8,12 +8,12 @@ export var DeathModal = React.createClass({
     dispatch: React.PropTypes.func.isRequired
   },
   render: function() {
-    var {dispatch, dungeon} = this.props;
+    var {dispatch} = this.props;
     var reset = () => {
       dispatch(actions.resetCharacter());
       dispatch(actions.resetDungeon());
       dispatch(actions.generateDungeonLevel(100, 100));
-      dispatch(actions.populateLevel(0));
+      // dispatch(actions.placeCharacterStart(character, dungeon.levels[0]);
     };
     return (
       <div id="Death-Modal" className="modal fade">

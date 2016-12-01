@@ -14,8 +14,8 @@ export var Main = React.createClass({
     character: React.PropTypes.object.isRequired
   },
   componentWillMount: function() {
-    var {dungeon, character, dispatch} = this.props;
-    dispatch(actions.placeCharacterStart(character, dungeon.levels[0]));
+    // var {dungeon, character, dispatch} = this.props;
+    // dispatch(actions.placeCharacterStart(character, dungeon.levels[0]));
   },
   render: function() {
     var {character, dispatch} = this.props;

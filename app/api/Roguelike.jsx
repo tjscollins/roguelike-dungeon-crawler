@@ -3,7 +3,7 @@ export var randomInteger = (max) => {
 };
 
 /*---------------Map Generation Functions------------------*/
-export var randomLevel = (cols, rows, shouldCreateMap) => {
+export var randomLevel = (cols, rows, depth, shouldCreateMap) => {
   var arr = [];
   for (var i = 0; i < cols; i++) {
     arr[i] = [];
@@ -12,7 +12,7 @@ export var randomLevel = (cols, rows, shouldCreateMap) => {
     }
   }
   if (shouldCreateMap) {
-    return createMap(arr);
+    return populate(createMap(arr), depth);
   } else {
     return {map: arr, rooms: [], boundaries: []};
   }
@@ -392,9 +392,8 @@ var boundary = (X, Y, w, h, i, j) => {
   }
 };
 
-export var populate = (dungeon, depth) => {
-  var {map, boundaries, rooms} = dungeon.levels[depth];
-
+var populate = (level, depth) => {
+  var {map, boundaries, rooms} = level;
   var monsters = [],
     healthItems = [],
     weapon = {};
@@ -488,7 +487,7 @@ export var populate = (dungeon, depth) => {
       i = 0;
     }
   }
-  dungeon.levels[depth] = {
+  return {
     map,
     boundaries,
     rooms,
@@ -496,8 +495,7 @@ export var populate = (dungeon, depth) => {
     healthItems,
     weapon
   };
-  return dungeon;
-};
+}
 
 var weaponName = (depth) => {
   switch (depth) {
