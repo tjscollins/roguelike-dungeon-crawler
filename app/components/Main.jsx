@@ -3,6 +3,8 @@ var {connect} = require('react-redux');
 import Header from 'Header';
 var actions = require('actions');
 import Map from 'Map';
+import WaterModal from 'WaterModal';
+import LavaModal from 'LavaModal';
 
 export var Main = React.createClass({
   propTypes: {
@@ -18,6 +20,8 @@ export var Main = React.createClass({
       <div>
         <Header/>
         <Map/>
+        <WaterModal/>
+        <LavaModal/>
       </div>
     );
   }

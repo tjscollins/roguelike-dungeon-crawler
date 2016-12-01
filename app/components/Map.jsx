@@ -2,6 +2,7 @@ var React = require('react');
 var {connect} = require('react-redux');
 var actions = require('actions');
 var Roguelike = require('Roguelike');
+var $ = require('jquery');
 
 export var Map = React.createClass({
   propTypes: {
@@ -93,8 +94,10 @@ export var Map = React.createClass({
     var terrain = dungeon.levels[depth].map[finalPos[0]][finalPos[1]];
     switch (terrain) {
       case 2:
+        $('#Water-Modal').modal('toggle');
         return Roguelike.fallIntoWater(character);
       case 3:
+        $('#Lava-Modal').modal('toggle');
         return Roguelike.fallIntoLava(character);
       case 4:
         // console.log('Attacking');
@@ -165,7 +168,6 @@ export var Map = React.createClass({
       var yDiffs = [
         position[1], rows - position[1]
       ];
-      //Implicit assumption that map is always 50x50 or larger
       //The viewable portion of the map is meant to be 50x50 always
       if (yDiffs[0] < 25) {
         yRange = [
@@ -184,7 +186,6 @@ export var Map = React.createClass({
         ];
       }
       for (var i = yRange[0]; i < yRange[1]; i++) {
-        // for (var i = 0; i < rows; i++) {
         var rowHTML = (xnum, ynum) => {
           var row = [],
             xRange = [];
