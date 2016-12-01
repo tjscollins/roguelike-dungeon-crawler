@@ -13,11 +13,12 @@ export var Map = React.createClass({
   componentDidMount: function() {
     window.addEventListener('keydown', this.handleKeyPress, true);
   },
-  componentDidUpdate: function() {
+  componentWillReceiveProps: function(nextProps) {
     var {dispatch} = this.props;
-    var {dungeon, character} = this.props;
+    var {dungeon, character} = nextProps;
     var {position, depth} = character;
     if (position[0] === 0 && position[1] === 0 && dungeon.levels[depth].map[0][0] !== 10) {
+      console.log('Character position didn\'t update in time', dungeon, character);
       dispatch(actions.placeCharacterStart(dungeon.levels[depth]));
     }
   },
@@ -197,7 +198,7 @@ export var Map = React.createClass({
           position[1] + 25
         ];
       }
-      console.log('yRange', yRange);
+      // console.log('yRange', yRange);
       for (var i = yRange[0]; i < yRange[1]; i++) {
         var rowHTML = (xnum, ynum) => {
           var row = [],
@@ -221,7 +222,7 @@ export var Map = React.createClass({
               position[0] + 25
             ];
           }
-          console.log('xRange', xRange);
+          // console.log('xRange', xRange);
           for (var j = xRange[0]; j < xRange[1]; j++) {
             row[j] = <div key={j + 'x' + ynum} className={that.gridClass(dungeon.levels[depth].map, j, ynum)}/>;
           }
@@ -232,7 +233,7 @@ export var Map = React.createClass({
       return gridDivs;
     }
     return (
-      <div onKeyPress={this.handleKeyPress} className="container .Map">
+      <div onKeyPress={this.handleKeyPress} className="container Map">
         {grid(character.depth)}
       </div>
     );

@@ -27,7 +27,7 @@ var character = {
 var store = require('configureStore').configure({dungeon, character});
 
 //Generate 1st Level of Dungeon
-store.dispatch(actions.generateDungeonLevel(100, 100));
+store.dispatch(actions.generateDungeonLevel(100, 100, 0));
 store.dispatch(actions.placeCharacterStart(store.getState().dungeon.levels[0]));
 
 //App css -- Handled by gulp now

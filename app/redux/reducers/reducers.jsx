@@ -14,7 +14,7 @@ export var dungeonReducer = (state = {}, action) => {
       //   return Roguelike.populate(state, action.depth);
     case 'ATTACK_MOB':
       return Roguelike.attackMob(state, action.character, action.monsterPosition);
-    case 'REMOVE_DEAD_MOB':
+    case 'CLEAR_POSITION':
       var {depth, monsterPosition} = action;
       var {map} = state.levels[depth];
       var x = monsterPosition[0],
@@ -42,24 +42,9 @@ export var characterReducer = (state = {}, action) => {
   switch (action.type) {
     case 'PLACE_CHARACTER_START':
       console.log('PLACE_CHARACTER_START', state, action);
-      var w = action.level.map.length,
-        h = action.level.map[0].length,
-        x = 0,
-        y = 0;
-      for (var i = 0; i < w; i++) {
-        for (var j = 0; j < h; j++) {
-          if (action.level.map[i][j] === 10) {
-            x = i;
-            y = j;
-          }
-        }
-      }
-      // if (x === 0 && y === 0 && action.level.map[0][0] !== 10) {
-      //   throw new Error('Starting position not found');
-      // }
       return {
         ...state,
-        position: [x, y]
+        position: [action.level.start[0], action.level.start[1]]
       };
       // break;
     case 'MOVE_NORTH':

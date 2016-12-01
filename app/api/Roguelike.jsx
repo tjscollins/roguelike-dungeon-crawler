@@ -14,7 +14,7 @@ export var randomLevel = (cols, rows, depth, shouldCreateMap) => {
   if (shouldCreateMap) {
     return populate(createMap(arr), depth);
   } else {
-    return {map: arr, rooms: [], boundaries: []};
+    return {map: arr, rooms: [], boundaries: [], start: []};
   }
 };
 
@@ -24,7 +24,8 @@ var createMap = (grid) => {
   var level = {
     map: grid,
     rooms: [],
-    boundaries: []
+    boundaries: [],
+    start: []
   };
   do {
     // console.log('Creating room with', grid, type, rooms);
@@ -208,7 +209,7 @@ var itFits = (level, direction, terrain) => {
 };
 
 var addRoom = (level, choice, type) => {
-  var {map, rooms, boundaries} = level;
+  var {map, rooms, boundaries, start} = level;
   var posX = randomInteger(map.length);
   var posY = randomInteger(map[0].length);
 
@@ -217,7 +218,6 @@ var addRoom = (level, choice, type) => {
   switch (type) {
     case 0:
       //Starting room
-
       //Check position if it goes off grid
       if (posX + width >= map.length) {
         posX = map.length - width - 1;
@@ -234,13 +234,22 @@ var addRoom = (level, choice, type) => {
           if (bound) {
             boundaries.push(bound);
           }
-          map[i][j] = i > posX && i < posX + width && j > posY && j < posY + height && !startSet
-            ? 10
-            : 1;
-          if (map[i][j] === 10) {
+          if (i !== posX && i !== (posX + width) && j !== posY && j !== (posY + height) && !startSet) {
+            map[i][j] = 10;
+            start.push(i);
+            start.push(j);
             startSet = true;
+          } else {
+            map[i][j] = 1;
           }
         }
+      }
+      if (!startSet) {
+        console.error(startSet);
+        throw new Error('Starting position not set properly');
+      } else {
+        console.log('Start set at', start);
+        console.log('map value is', map[start[0]][start[1]]);
       }
       break;
     case 1:
@@ -392,13 +401,16 @@ var boundary = (X, Y, w, h, i, j) => {
   }
 };
 
-var populate = (level, depth) => {
-  var {map, boundaries, rooms} = level;
+var populate = (dLevel, depth) => {
+  console.log('Populating', dLevel, depth);
+  var {map, boundaries, rooms, start} = dLevel;
+  // console.log(map, boundaries, rooms);
   var monsters = [],
     healthItems = [],
     weapon = {};
   var width = map.length;
   var height = map[0].length;
+  var startSet = false;
   var bossLevel = depth > 2
     ? randomInteger(2) > 1
       ? true
@@ -445,6 +457,7 @@ var populate = (level, depth) => {
                 dmg,
                 position
               };
+              // console.log('Weapon', weapon, depth);
               map[i][j] = 6;
               break;
             case 'mob':
@@ -493,9 +506,10 @@ var populate = (level, depth) => {
     rooms,
     monsters,
     healthItems,
-    weapon
+    weapon,
+    start
   };
-}
+};
 
 var weaponName = (depth) => {
   switch (depth) {
