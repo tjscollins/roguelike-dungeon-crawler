@@ -41,7 +41,7 @@ export var dungeonReducer = (state = {}, action) => {
 export var characterReducer = (state = {}, action) => {
   switch (action.type) {
     case 'PLACE_CHARACTER_START':
-      console.log('PLACE_CHARACTER_START', state, action);
+      // console.log('PLACE_CHARACTER_START', state, action);
       return {
         ...state,
         position: [action.level.start[0], action.level.start[1]]

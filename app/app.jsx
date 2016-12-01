@@ -1,8 +1,9 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var {Provider} = require('react-redux');
-// var {Route, Router, IndexRoute, hashHistory} = require('react-router');
+
 import Main from 'Main';
+
 var actions = require('actions');
 
 //Create Initial State
@@ -29,12 +30,6 @@ var store = require('configureStore').configure({dungeon, character});
 //Generate 1st Level of Dungeon
 store.dispatch(actions.generateDungeonLevel(100, 100, 0));
 store.dispatch(actions.placeCharacterStart(store.getState().dungeon.levels[0]));
-
-//App css -- Handled by gulp now
-// require('style!css!sass!applicationStyles');
-
-//bootstrap -- Handled by gulp now
-// require('bootstrap-webpack');
 
 ReactDOM.render(
   <Provider store={store}>

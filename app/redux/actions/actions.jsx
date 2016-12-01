@@ -2,10 +2,6 @@ export var generateDungeonLevel = (cols, rows, depth) => {
   return {type: 'GENERATE_DUNGEON_LEVEL', cols, rows, depth};
 };
 
-// export var populateLevel = (depth) => {
-//   return {type: 'POPULATE_LEVEL', depth};
-// };
-
 export var placeCharacterStart = (level) => {
   return {type: 'PLACE_CHARACTER_START', level};
 };

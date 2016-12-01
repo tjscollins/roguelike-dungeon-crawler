@@ -245,11 +245,11 @@ var addRoom = (level, choice, type) => {
         }
       }
       if (!startSet) {
-        console.error(startSet);
+        // console.error(startSet);
         throw new Error('Starting position not set properly');
       } else {
-        console.log('Start set at', start);
-        console.log('map value is', map[start[0]][start[1]]);
+        // console.log('Start set at', start);
+        // console.log('map value is', map[start[0]][start[1]]);
       }
       break;
     case 1:
@@ -402,7 +402,7 @@ var boundary = (X, Y, w, h, i, j) => {
 };
 
 var populate = (dLevel, depth) => {
-  console.log('Populating', dLevel, depth);
+  // console.log('Populating', dLevel, depth);
   var {map, boundaries, rooms, start} = dLevel;
   // console.log(map, boundaries, rooms);
   var monsters = [],

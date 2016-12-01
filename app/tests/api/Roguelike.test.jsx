@@ -37,7 +37,7 @@ describe('Roguelike API', () => {
     }).filter((val) => {
       return val.length > 0;
     });
-    expect(level[0][0]).toEqual(1);
+    expect(level[0][0]).toBeA('number');
     level = Roguelike.randomLevel(25, 25, 0, true).map.map((val) => {
       return val.filter((valN) => {
         return valN !== 0;
@@ -45,7 +45,7 @@ describe('Roguelike API', () => {
     }).filter((val) => {
       return val.length > 0;
     });
-    expect(level[0][0]).toEqual(1);
+    expect(level[0][0]).toBeA('number');
     level = Roguelike.randomLevel(30, 10, 0, true).map.map((val) => {
       return val.filter((valN) => {
         return valN !== 0;

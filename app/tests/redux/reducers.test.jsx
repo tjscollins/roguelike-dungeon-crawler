@@ -115,9 +115,9 @@ describe('reducers', () => {
       expect(res.levels[0].monsters[0]).toNotExist();
     });
 
-    it('should REMOVE DEAD MOBs', () => {
+    it('should CLEAR POSITIONs', () => {
       var action = {
-        type: 'REMOVE_DEAD_MOB',
+        type: 'CLEAR_POSITION',
         depth: 0,
         monsterPosition: [0, 0]
       };
@@ -138,7 +138,6 @@ describe('reducers', () => {
 
   describe('characterReducer', () => {
     it('should PLACE the CHARACTER on the player-START square', () => {
-
       //Dungeon with a single 3x3 room with player-start square in the center.
       var dungeon = {
         levels: [
@@ -151,7 +150,8 @@ describe('reducers', () => {
                 10, 1, 1
               ],
               [1, 1, 1]
-            ]
+            ],
+            start: [1, 0]
           }
         ]
       };

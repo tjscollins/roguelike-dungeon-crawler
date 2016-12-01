@@ -26,10 +26,9 @@ describe('actions', () => {
   it('should generate the PLACE_CHARACTER_START action', () => {
     var action = {
       type: 'PLACE_CHARACTER_START',
-      character: 'character',
       level: 'level'
     };
-    var res = actions.placeCharacterStart('character', 'level');
+    var res = actions.placeCharacterStart('level');
     expect(res).toEqual(action);
   });
 
