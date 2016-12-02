@@ -1,6 +1,29 @@
 import * as Roguelike from 'Roguelike';
 
-export var reducer = (state = {}, action) => {
+var initialDungeon = {
+  allVisible: false,
+  victory: false,
+  levels: [],
+  lava: {},
+  water: {}
+};
+
+var initialCharacter = {
+  health: 20,
+  maxHealth: 20,
+  xp: 0,
+  depth: 0,
+  weapon: {
+    name: 'Fists',
+    dmg: 5
+  },
+  position: [0, 0]
+};
+
+export var reducer = (state = {
+  dungeon: initialDungeon,
+  character: initialCharacter
+}, action) => {
   switch (action.type) {
     case 'GENERATE_DUNGEON_LEVEL':
       //Generate and populate a random dungeon level
@@ -38,7 +61,10 @@ export var reducer = (state = {}, action) => {
         };
       }
     case 'RESET_DUNGEON':
-      return {allVisible: false, victory: false, levels: [], lava: {}, water: {}};
+      return {
+        ...state,
+        dungeon: initialDungeon
+      };
     case 'COMBAT':
       return Roguelike.combat(state, action.monsterPosition);
     case 'CLEAR_GRID_POSITION':
@@ -50,7 +76,7 @@ export var reducer = (state = {}, action) => {
       return {
         ...state,
         dungeon: {
-          ...dungeon,
+          ...state.dungeon,
           levels: state.dungeon.levels.slice(0, depth).concat({
             ...state.dungeon.levels[depth],
             map: map.slice(0, x).concat([map[x].slice(0, y).concat([1]).concat(map[x].slice(y + 1))]).concat(map.slice(x + 1))
@@ -60,7 +86,10 @@ export var reducer = (state = {}, action) => {
     case 'TOGGLE_DARKNESS':
       return {
         ...state,
-        allVisible: !state.allVisible
+        dungeon: {
+          ...state.dungeon,
+          allVisible: !state.dungeon.allVisible
+        }
       };
     case 'MOVE_NORTH':
       var {depth, position} = state.character;
@@ -75,7 +104,7 @@ export var reducer = (state = {}, action) => {
       return {
         ...state,
         character: {
-          ...character,
+          ...state.character,
           position: newPosition
         }
       };
@@ -92,7 +121,7 @@ export var reducer = (state = {}, action) => {
       return {
         ...state,
         character: {
-          ...character,
+          ...state.character,
           position: newPosition
         }
       };
@@ -110,7 +139,7 @@ export var reducer = (state = {}, action) => {
       return {
         ...state,
         character: {
-          ...character,
+          ...state.character,
           position: newPosition
         }
       };
@@ -128,7 +157,7 @@ export var reducer = (state = {}, action) => {
       return {
         ...state,
         character: {
-          ...character,
+          ...state.character,
           position: newPosition
         }
       };
@@ -142,7 +171,7 @@ export var reducer = (state = {}, action) => {
             return {
               ...state,
               character: {
-                ...character,
+                ...state.character,
                 weapon
               }
             };
@@ -156,13 +185,47 @@ export var reducer = (state = {}, action) => {
           return {
             ...state,
             character: {
-              ...character,
+              ...state.character,
               health: Math.min(maxHealth, health + item.value)
             }
           };
         default:
           throw new Error('Error Getting Item: Unknown itemType');
       }
+    case 'FALL_INTO_WATER':
+      var {health, weapon} = state.character;
+      return {
+        ...state,
+        dungeon: {
+          ...state.dungeon,
+          water: Roguelike.randomWater()
+        },
+        character: {
+          ...state.character,
+          health: health - 5,
+          weapon: {
+            ...weapon,
+            dmg: weapon.dmg - 1
+          }
+        }
+      };
+    case 'FALL_INTO_LAVA':
+      var {health} = state.character;
+      return {
+        ...state,
+        dungeon: {
+          ...state.dungeon,
+          lava: Roguelike.randomLava()
+        },
+        character: {
+          ...state.character,
+          health: health - 50,
+          weapon: {
+            name: 'Fists',
+            dmg: 2
+          }
+        }
+      };
     case 'UPDATE_DEPTH':
       var {character, dungeon} = state;
       var {depth, dir} = action;
@@ -190,15 +253,10 @@ export var reducer = (state = {}, action) => {
       }
     case 'RESET_CHARACTER':
       return {
-        health: 20,
-        maxHealth: 20,
-        xp: 0,
-        depth: 0,
-        weapon: {
-          name: 'Fists',
-          dmg: '5'
-        },
-        position: [0, 0]
+        ...state,
+        character: initialCharacter
       };
   }
 };
+
+export default reducer;

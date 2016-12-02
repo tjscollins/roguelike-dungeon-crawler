@@ -1,6 +1,8 @@
 import React from 'react';
+import {connect} from 'react-redux';
 
-var LavaModal = ({lava}) => {
+var LavaModal = (props) => {
+  var {lava} = props.dungeon;
   return (
     <div id="Lava-Modal" className="modal fade">
       <div className="modal-dialog" role="document">
@@ -15,7 +17,7 @@ var LavaModal = ({lava}) => {
             <p>{lava.text}</p>
           </div>
           <div className="modal-footer">
-            <button className="btn btn-secondary" type="button" onClick={lava.random} data-dismiss="modal">Your Equipment is Melted and the Pain is Excruciating</button>
+            <button className="btn btn-secondary" type="button" data-dismiss="modal">Your Equipment is Melted and the Pain is Excruciating</button>
           </div>
         </div>
       </div>
@@ -24,7 +26,9 @@ var LavaModal = ({lava}) => {
 };
 
 LavaModal.propTypes = {
-  lava: React.PropTypes.object.isRequired
+  dungeon: React.PropTypes.object.isRequired
 };
 
-export default LavaModal;
+export default connect((state) => {
+  return state
+})(LavaModal);

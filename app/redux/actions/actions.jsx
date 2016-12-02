@@ -38,6 +38,14 @@ export var getItem = (itemPosition, itemType) => {
   return {type: 'GET_ITEM', itemPosition, itemType};
 };
 
+export var fallIntoWater = () => {
+  return {type: 'FALL_INTO_WATER'};
+};
+
+export var fallIntoLava = () => {
+  return {type: 'FALL_INTO_LAVA'};
+};
+
 export var updateDepth = (depth, dir) => {
   return {type: 'UPDATE_DEPTH', depth, dir};
 };

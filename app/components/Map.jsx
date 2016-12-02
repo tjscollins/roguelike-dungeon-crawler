@@ -1,8 +1,8 @@
 var React = require('react');
 var {connect} = require('react-redux');
 var Roguelike = require('Roguelike');
-import * as $ from 'jquery';
-
+// import $ from 'jquery';
+var $ = require('jquery');
 /*----------Redux----------*/
 import * as actions from 'actions';
 
@@ -13,39 +13,19 @@ export var Map = React.createClass({
     dispatch: React.PropTypes.func.isRequired
   },
   componentWillMount: function() {
-    // var {dungeon, character, dispatch} = this.props;
-    // var {position, depth} = character;
-    // var {map, start} = dungeon.levels[depth];
-    // //Generate 1st Level of Dungeon
-    // //If it doesn't already exist
-    // if (!dungeon.levels[0]) {
-    //   dispatch(actions.generateDungeonLevel(100, 100, 0));
-    // }
-    // //Place the character at the start
-    // //if the character isn't already on the map
-    // if (map[position[0]][position[1]] === 0) {
-    //   dispatch(actions.placeCharacterStart(dungeon.levels[depth]));
-    // }
+    console.log('Props are', this.props);
   },
   componentDidMount: function() {
-    // var {dungeon, character, dispatch} = this.props;
-    // var {position, depth} = character;
-    // var {map, start} = dungeon.levels[depth];
-    // //Place the character at the start
-    // //if the character isn't already on the map
-    // if (map[position[0]][position[1]] === 0) {
-    //   dispatch(actions.placeCharacterStart(dungeon.levels[0]));
-    // }
     window.addEventListener('keydown', this.handleKeyPress, true);
   },
   componentWillReceiveProps: function(nextProps) {
-    var {dispatch} = this.props;
-    var {dungeon, character} = nextProps;
-    var {position, depth} = character;
-    if (position[0] === 0 && position[1] === 0 && dungeon.levels[depth].map[0][0] !== 10) {
-      console.log('Character position didn\'t update in time', dungeon, character);
-      dispatch(actions.placeCharacterStart(dungeon.levels[depth]));
-    }
+    // var {dispatch} = this.props;
+    // var {dungeon, character} = nextProps;
+    // var {position, depth} = character;
+    // if (position[0] === 0 && position[1] === 0 && dungeon.levels[depth].map[0][0] !== 10) {
+    //   console.log('Character position didn\'t update in time', dungeon, character);
+    //   dispatch(actions.placeCharacterStart(dungeon.levels[depth]));
+    // }
   },
   componentWillUnmount: function() {
     window.removeEventListener('keydown', this.handleKeyPress, true);
@@ -86,39 +66,40 @@ export var Map = React.createClass({
     }
   },
   handleKeyPress: function(e) {
-    var {character, dungeon, dispatch} = this.props;
-    var {depth, position} = character;
-    // e.preventDefault(); //Commented to allow other keybinds to function normally
-    // console.log('Keypress', e);
+    var {character, dispatch} = this.props;
+    var {position} = character;
     switch (e.keyCode) {
       case 38:
         //Up-Arrow
-        dispatch(actions.moveNorth(this.moveInto([
+        this.moveInto([
           position[0], position[1] - 1
-        ]), dungeon.levels[depth]));
+        ]);
+        dispatch(actions.moveNorth());
         break;
       case 40:
         //Down-Arrow
-        dispatch(actions.moveSouth(this.moveInto([
+        this.moveInto([
           position[0], position[1] + 1
-        ]), dungeon.levels[depth]));
+        ]);
+        dispatch(actions.moveSouth());
         break;
       case 39:
         //Right-Arrow
-        dispatch(actions.moveEast(this.moveInto([
+        this.moveInto([
           position[0] + 1,
           position[1]
-        ]), dungeon.levels[depth]));
+        ]);
+        dispatch(actions.moveEast());
         break;
       case 37:
         //Left-Arrow
-        dispatch(actions.moveWest(this.moveInto([
+        this.moveInto([
           position[0] - 1,
           position[1]
-        ]), dungeon.levels[depth]));
+        ]);
+        dispatch(actions.moveWest());
         break;
       default:
-        // console.log('Unhandled keypress', e.keyCode);
     }
   },
   moveInto: function(finalPos) {
@@ -129,61 +110,37 @@ export var Map = React.createClass({
     switch (terrain) {
       case 2:
         $('#Water-Modal').modal('toggle');
-        return Roguelike.fallIntoWater(character);
+        dispatch(actions.fallIntoWater());
+        break;
       case 3:
         $('#Lava-Modal').modal('toggle');
-        return Roguelike.fallIntoLava(character);
+        dispatch(actions.fallIntoLava());
+        break;
       case 4:
-        // console.log('Attacking');
-        var {exp} = dungeon.levels[depth].monsters.filter((mob) => {
-          return mob.position[0] === finalPos[0] && mob.position[1] === finalPos[1];
-        })[0];
-        // console.log(exp);
-        dispatch(actions.attackMob(character, finalPos));
-        var enemy = this.props.dungeon.levels[depth].monsters.filter((mob) => {
-          return mob.position[0] === finalPos[0] && mob.position[1] === finalPos[1];
-        });
-        // console.log(enemy[0]);
-        if (enemy[0]) {
-          var dmgTaken = Math.max(0, enemy[0].dmg + Math.ceil(Math.random() * 10) - Math.floor(character.xp / 100));
-          dispatch(actions.updateHP(dmgTaken * -1));
-          if (this.props.character.health > 0) {
-            this.moveInto(finalPos);
-          } else {
-            //Character Died!
-            return this.props.character;
-          }
-        } else {
-          // console.log(exp);
-          dispatch(actions.clearPosition(depth, finalPos));
-          dispatch(actions.updateXP(exp));
-          return this.props.character;
+        dispatch(actions.combat(finalPos));
+        if (character.health > 0) {
+          dispatch(actions.clearGridPosition(depth, finalPos));
         }
         break;
       case 5:
-        var item = dungeon.levels[depth].healthItems.filter((potion) => {
-          return potion.position[0] === finalPos[0] && potion.position[1] === finalPos[1];
-        })[0];
-        dispatch(actions.updateHP(item.value));
-        dispatch(actions.clearPosition(depth, item.position));
-        return this.props.character;
+        dispatch(actions.getItem(finalPos, 'healthPotion'));
+        dispatch(actions.clearGridPosition(depth, finalPos));
+        break;
       case 6:
-        dispatch(actions.getEquipment(dungeon.levels[depth].weapon));
-        dispatch(actions.clearPosition(depth, dungeon.levels[depth].weapon.position));
-        return this.props.character;
+        dispatch(actions.getItem(finalPos, 'weapon'));
+        dispatch(actions.clearGridPosition(depth, finalPos));
+        break;
       case 9:
         var newDepth = depth + 1;
-        console.log(dungeon.levels[newDepth]);
         if (!dungeon.levels[newDepth]) {
           dispatch(actions.generateDungeonLevel(Roguelike.randomInteger(50) + 25, Roguelike.randomInteger(50) + 25), newDepth);
         }
         dispatch(actions.updateDepth(newDepth));
-        return this.props.character;
+        break;
       case 10:
         if (depth !== 0) {
           var newDepth = depth - 1;
           dispatch(actions.updateDepth(newDepth));
-          return this.props.character;
         }
         break;
       case 11:

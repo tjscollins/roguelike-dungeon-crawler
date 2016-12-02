@@ -7,6 +7,7 @@ var Stats = React.createClass({
   },
   render: function() {
     var {character} = this.props;
+    // console.log('Stats Props', this.props);
     var {health, maxHealth, weapon, depth, xp} = character;
     return (
       <div className="Stats">

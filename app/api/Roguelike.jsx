@@ -1,22 +1,4 @@
-export var lava = () => {
-  var random = () => {
-    console.log('New Random Lava');
-    var int = Math.ceil(Math.random() * 3);
-    switch (int) {
-      case 1:
-        return {title: 'A volcanic eruption!', text: 'The fires of this mountain are legendary--and so are the burns you received when the floor melted beneath your feet and gave way to liquid-hot magma.'};
-      case 2:
-        return {title: 'Just Jump!', text: '"It\'s not much bigger than the fesetival mudpits back home," you tried to tell yourself.  "Just Jump!"  And so you did.  It will take powerful magic to heal these scars now.'};
-      case 3:
-        return {title: 'Virgins Only', text: 'The fire gods are fickle, and dislike the taste of impure flesh.  Fortunately they have spit you back out again, much less than you were.'};
-    }
-  };
-  return {
-    ...random(),
-    random
-  };
-};
-
+/*----------Generic Helper Function----------*/
 export var randomInteger = (max) => {
   return Math.ceil(Math.random() * max);
 };
@@ -540,40 +522,17 @@ var weaponName = (depth) => {
       return 'Rusty Shiv';
     case 4:
       return 'Red Herring';
+    case 5:
+      return 'Tire Iron of Great Justice';
+    case 6:
+      return 'Zed\'s Katana';
   }
 };
 
 /*----------------------Game Mechanics Functions---------------------------*/
 
-export var fallIntoWater = (character) => {
-  var {health, weapon} = character;
-  return {
-    ...character,
-    health: health - 5,
-    weapon: {
-      ...weapon,
-      dmg: weapon.dmg - 1
-    }
-  };
-};
-
-export var fallIntoLava = (character) => {
-  var {health} = character;
-  return {
-    ...character,
-    health: health - 50,
-    weapon: {
-      weapon: 'Fists',
-      dmg: 2
-    }
-  };
-};
-
-export var combat = ({
-  dungeon,
-  character
-}, monsterPosition) => {
-
+export var combat = (state, monsterPosition) => {
+  var {dungeon, character} = state;
   var {weapon, depth, health, xp} = character;
   var {monsters} = dungeon.levels[depth];
 
@@ -603,10 +562,10 @@ export var combat = ({
     return {
       ...state,
       dungeon: {
-        ...dungeon,
-        levels: dungeon.levels.slice(0, depth).concat([
+        ...state.dungeon,
+        levels: state.dungeon.levels.slice(0, depth).concat([
           {
-            ...dungeon.levels[depth],
+            ...state.dungeon.levels[depth],
             monsters: monsters.slice(0, index).concat([
               {
                 ...enemy[0],
@@ -614,23 +573,54 @@ export var combat = ({
               }
             ]).concat(monsters.slice(index + 1))
           }
-        ]).concat(dungeon.levels.slice(depth + 1))
+        ]).concat(state.dungeon.levels.slice(depth + 1))
       },
       character: {
-        ...character,
-        health: newHealth,
-        xp: xp + exp
+        ...state.character,
+        health: newHealth
       }
     };
   } else {
     return {
-      ...dungeon,
-      levels: dungeon.levels.slice(0, depth).concat([
-        {
-          ...dungeon.levels[depth],
-          monsters: monsters.slice(0, index).concat(monsters.slice(index + 1))
-        }
-      ]).concat(dungeon.levels.slice(depth + 1))
+      ...state,
+      dungeon: {
+        ...state.dungeon,
+        levels: state.dungeon.levels.slice(0, depth).concat([
+          {
+            ...state.dungeon.levels[depth],
+            monsters: monsters.slice(0, index).concat(monsters.slice(index + 1))
+          }
+        ]).concat(state.dungeon.levels.slice(depth + 1))
+      },
+      character: {
+        ...state.character,
+        health: newHealth,
+        xp: xp + exp
+      }
     };
+  }
+};
+
+export var randomLava = () => {
+  var int = randomInteger(3);
+  switch (int) {
+    case 1:
+      return {title: 'A volcanic eruption!', text: 'The fires of this mountain are legendary--and so are the burns you received when the floor melted beneath your feet and gave way to liquid-hot magma.'};
+    case 2:
+      return {title: 'Just Jump!', text: '"It\'s not much bigger than the fesetival mudpits back home," you tried to tell yourself.  "Just Jump!"  And so you did.  It will take powerful magic to heal these scars now.'};
+    case 3:
+      return {title: 'Virgins Only', text: 'The fire gods are fickle, and dislike the taste of impure flesh.  Fortunately they have spit you back out again, much less than you were.'};
+  };
+};
+
+export var randomWater = () => {
+  var int = randomInteger(3)
+  switch (int) {
+    case 1:
+      return {title: 'A sinkhole opens up!', text: 'Unprepared for the sudden dip you find yourself weakened by the cold, deathly chill of the water.  You climb out, but you know you\'ll be less effective in combat...'};
+    case 2:
+      return {title: 'Man-eating Piranhas!', text: 'The puddle looked safe enough, but as you swim across it you realize you are not alone.  You survive the pesky little nibblers, but the bleeding wounds they left behind are sure to attract the monsters in the dark...'};
+    case 3:
+      return {title: 'Cenote', text: 'The deep, dark water looked refreshing, until you noticed the piles of bones at the bottom and the sacrifical altar on the shore. Shaken and afraid, you clamber out the other side, unready for what lies ahead in the dark...'};
   }
 };

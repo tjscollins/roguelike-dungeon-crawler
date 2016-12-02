@@ -17,6 +17,7 @@ var Main = () => {
       <Map/>
       <BossModal/>
       <DeathModal/>
+      <LavaModal/>
       <WaterModal/>
     </div>
   );
