@@ -30,5 +30,5 @@ LavaModal.propTypes = {
 };
 
 export default connect((state) => {
-  return state
+  return state;
 })(LavaModal);

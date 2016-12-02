@@ -18,15 +18,7 @@ export var Map = React.createClass({
   componentDidMount: function() {
     window.addEventListener('keydown', this.handleKeyPress, true);
   },
-  componentWillReceiveProps: function(nextProps) {
-    // var {dispatch} = this.props;
-    // var {dungeon, character} = nextProps;
-    // var {position, depth} = character;
-    // if (position[0] === 0 && position[1] === 0 && dungeon.levels[depth].map[0][0] !== 10) {
-    //   console.log('Character position didn\'t update in time', dungeon, character);
-    //   dispatch(actions.placeCharacterStart(dungeon.levels[depth]));
-    // }
-  },
+  componentWillReceiveProps: function(nextProps) {},
   componentWillUnmount: function() {
     window.removeEventListener('keydown', this.handleKeyPress, true);
   },
@@ -109,41 +101,49 @@ export var Map = React.createClass({
     var terrain = dungeon.levels[depth].map[finalPos[0]][finalPos[1]];
     switch (terrain) {
       case 2:
-        $('#Water-Modal').modal('toggle');
+        //Falling into Water Obstacle
+        $('#Water-Modal').modal('show');
         dispatch(actions.fallIntoWater());
         break;
       case 3:
-        $('#Lava-Modal').modal('toggle');
+        //Falling into Lava Obstacle
+        $('#Lava-Modal').modal('show');
         dispatch(actions.fallIntoLava());
         break;
       case 4:
+        //Attacking normal mob
         dispatch(actions.combat(finalPos));
         if (character.health > 0) {
           dispatch(actions.clearGridPosition(depth, finalPos));
         }
         break;
       case 5:
+        //Picking up Health Item
         dispatch(actions.getItem(finalPos, 'healthPotion'));
         dispatch(actions.clearGridPosition(depth, finalPos));
         break;
       case 6:
+        //Picking up a new weapon
         dispatch(actions.getItem(finalPos, 'weapon'));
         dispatch(actions.clearGridPosition(depth, finalPos));
         break;
       case 9:
+        //Descending to a lower level of the dungeon
         var newDepth = depth + 1;
         if (!dungeon.levels[newDepth]) {
-          dispatch(actions.generateDungeonLevel(Roguelike.randomInteger(50) + 25, Roguelike.randomInteger(50) + 25), newDepth);
+          dispatch(actions.generateDungeonLevel(Roguelike.randomInteger(50) + 25, Roguelike.randomInteger(50) + 25), newDepth, true);
         }
         dispatch(actions.updateDepth(newDepth));
         break;
       case 10:
+        //Ascending to a higher level of the dungeon
         if (depth !== 0) {
           var newDepth = depth - 1;
           dispatch(actions.updateDepth(newDepth));
         }
         break;
       case 11:
+        //Attacking the final boss of the dungeon
         // console.log('Attacking');
         var {exp} = dungeon.levels[depth].monsters.filter((mob) => {
           return mob.position[0] === finalPos[0] && mob.position[1] === finalPos[1];
@@ -180,7 +180,7 @@ export var Map = React.createClass({
     var {position} = character;
     var that = this;
     if (character.health < 0) {
-      $('#Death-Modal').modal('toggle');
+      $('#Death-Modal').modal('show');
     }
     function grid(depth) {
       var cols = dungeon.levels[depth].map.length;
