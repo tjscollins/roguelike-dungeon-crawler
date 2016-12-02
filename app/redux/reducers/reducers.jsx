@@ -1,139 +1,193 @@
-var Roguelike = require('Roguelike');
+import * as Roguelike from 'Roguelike';
 
-export var dungeonReducer = (state = {}, action) => {
+export var reducer = (state = {}, action) => {
   switch (action.type) {
     case 'GENERATE_DUNGEON_LEVEL':
-      return {
-        ...state,
-        levels: [
-          ...state.levels,
-          Roguelike.randomLevel(action.cols, action.rows, action.depth, true)
-        ]
-      };
-      // case 'POPULATE_LEVEL':
-      //   return Roguelike.populate(state, action.depth);
-    case 'ATTACK_MOB':
-      return Roguelike.attackMob(state, action.character, action.monsterPosition);
-    case 'CLEAR_POSITION':
+      //Generate and populate a random dungeon level
+      //if(place), then place the player at the start point for
+      //this new level.
+      var {dungeon, character} = state;
+      var {cols, rows, depth, place} = action;
+      var newLevel = Roguelike.randomLevel(cols, rows, depth, true);
+      if (place) {
+        return {
+          ...state,
+          character: {
+            ...character,
+            depth,
+            position: newLevel.start
+          },
+          dungeon: {
+            ...dungeon,
+            levels: [
+              ...dungeon.levels,
+              newLevel
+            ]
+          }
+        };
+      } else {
+        return {
+          ...state,
+          dungeon: {
+            ...dungeon,
+            levels: [
+              ...dungeon.levels,
+              newLevel
+            ]
+          }
+        };
+      }
+    case 'RESET_DUNGEON':
+      return {allVisible: false, victory: false, levels: [], lava: {}, water: {}};
+    case 'COMBAT':
+      return Roguelike.combat(state, action.monsterPosition);
+    case 'CLEAR_GRID_POSITION':
       var {depth, monsterPosition} = action;
-      var {map} = state.levels[depth];
-      var x = monsterPosition[0],
-        y = monsterPosition[1];
+      var {map} = state.dungeon.levels[depth];
+      var [x,
+        y] = monsterPosition;
+      // console.log('[x,y]', x, y);
       return {
         ...state,
-        levels: state.levels.slice(0, depth).concat({
-          ...state.levels[depth],
-          map: map.slice(0, x).concat([map[x].slice(0, y).concat([1]).concat(map[x].slice(y + 1))]).concat(map.slice(x + 1))
-        })
+        dungeon: {
+          ...dungeon,
+          levels: state.dungeon.levels.slice(0, depth).concat({
+            ...state.dungeon.levels[depth],
+            map: map.slice(0, x).concat([map[x].slice(0, y).concat([1]).concat(map[x].slice(y + 1))]).concat(map.slice(x + 1))
+          })
+        }
       };
     case 'TOGGLE_DARKNESS':
       return {
         ...state,
         allVisible: !state.allVisible
       };
-    case 'RESET_DUNGEON':
-      return {allVisible: false, victory: false, levels: []};
-    default:
-      return state;
-  }
-};
-
-export var characterReducer = (state = {}, action) => {
-  switch (action.type) {
-    case 'PLACE_CHARACTER_START':
-      // console.log('PLACE_CHARACTER_START', state, action);
-      return {
-        ...state,
-        position: [action.level.start[0], action.level.start[1]]
-      };
-      // break;
     case 'MOVE_NORTH':
-      var x = action.character.position[0],
-        y = action.character.position[1];
-      var position = y > 0 && action.level.map[x][y - 1] !== 0
+      var {depth, position} = state.character;
+      var {map} = state.dungeon.levels[depth];
+      var [x,
+        y] = position;
+      var newPosition = y > 0 && map[x][y - 1] !== 0
         ? [
           x, y - 1
         ]
         : [x, y];
       return {
-        ...action.character,
-        position
+        ...state,
+        character: {
+          ...character,
+          position: newPosition
+        }
       };
     case 'MOVE_SOUTH':
-      var x = action.character.position[0],
-        y = action.character.position[1];
-      var position = y < action.level.map[0].length && action.level.map[x][y + 1] !== 0
+      var {depth, position} = state.character;
+      var {map} = state.dungeon.levels[depth];
+      var [x,
+        y] = position;
+      var newPosition = y < map[0].length && map[x][y + 1] !== 0
         ? [
           x, y + 1
         ]
         : [x, y];
       return {
-        ...action.character,
-        position
+        ...state,
+        character: {
+          ...character,
+          position: newPosition
+        }
       };
     case 'MOVE_EAST':
-      var x = action.character.position[0],
-        y = action.character.position[1];
-      var position = x < action.level.map.length && action.level.map[x + 1][y] !== 0
+      var {depth, position} = state.character;
+      var {map} = state.dungeon.levels[depth];
+      var [x,
+        y] = position;
+      var newPosition = x < map.length && map[x + 1][y] !== 0
         ? [
           x + 1,
           y
         ]
         : [x, y];
       return {
-        ...action.character,
-        position
+        ...state,
+        character: {
+          ...character,
+          position: newPosition
+        }
       };
     case 'MOVE_WEST':
-      var x = action.character.position[0],
-        y = action.character.position[1];
-      var position = x > 0 && action.level.map[x - 1][y] !== 0
+      var {depth, position} = state.character;
+      var {map} = state.dungeon.levels[depth];
+      var [x,
+        y] = position;
+      var newPosition = x > 0 && map[x - 1][y] !== 0
         ? [
           x - 1,
           y
         ]
         : [x, y];
       return {
-        ...action.character,
-        position
-      };
-    case 'UPDATE_HP':
-      var {health, maxHealth} = state;
-      var newHealth = health + action.dHP;
-      return {
         ...state,
-        health: newHealth > maxHealth
-          ? maxHealth
-          : newHealth
+        character: {
+          ...character,
+          position: newPosition
+        }
       };
-    case 'UPDATE_XP':
-      var {health, xp, maxHealth} = state;
-      // console.log(health, xp, action.dXP);
-      if (Math.floor(xp / 100) < Math.floor((xp + action.dXP) / 100)) {
-        health = (Math.floor((xp + action.dXP) / 100) + 1) * 20;
-        maxHealth = health;
-      }
-      xp = xp + action.dXP;
-      return {
-        ...state,
-        xp,
-        health,
-        maxHealth
-      };
-    case 'GET_EQ':
-      if (action.weapon.dmg > state.weapon.dmg) {
-        return {
-          ...state,
-          weapon: action.weapon
-        };
-      } else {
-        return state;
+    case 'GET_ITEM':
+      var {itemPosition, itemType} = action;
+      var {depth, health, maxHealth} = state.character;
+      var {map, weapon, healthItems} = state.dungeon.levels[depth];
+      switch (itemType) {
+        case 'weapon':
+          if (weapon.dmg > state.character.weapon.dmg) {
+            return {
+              ...state,
+              character: {
+                ...character,
+                weapon
+              }
+            };
+          } else {
+            return state;
+          }
+        case 'healthPotion':
+          var item = healthItems.filter((potion) => {
+            return potion.position[0] === itemPosition[0] && potion.position[1] === itemPosition[1];
+          })[0];
+          return {
+            ...state,
+            character: {
+              ...character,
+              health: Math.min(maxHealth, health + item.value)
+            }
+          };
+        default:
+          throw new Error('Error Getting Item: Unknown itemType');
       }
     case 'UPDATE_DEPTH':
-      return {
-        ...state,
-        depth: action.depth
-      };
+      var {character, dungeon} = state;
+      var {depth, dir} = action;
+      switch (dir) {
+        case 'up':
+          return {
+            ...state,
+            character: {
+              ...character,
+              depth,
+              position: dungeon.levels[depth].end
+            }
+          };
+        case 'down':
+          return {
+            ...state,
+            character: {
+              ...character,
+              depth,
+              position: dungeon.levels[depth].start
+            }
+          };
+        default:
+          throw new Error('Error updated depth: Unknown direction');
+      }
     case 'RESET_CHARACTER':
       return {
         health: 20,
@@ -146,7 +200,5 @@ export var characterReducer = (state = {}, action) => {
         },
         position: [0, 0]
       };
-    default:
-      return state;
   }
 };

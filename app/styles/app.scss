@@ -3,10 +3,11 @@
 
 //Bootstrap
 @import "bootstrap";
-@import "bootstrap/theme";
+// @import "bootstrap/theme";
 
 //Components
 @import "components/header";
 @import "components/legend";
 @import "components/map";
+@import "components/modal";
 @import "components/stats";

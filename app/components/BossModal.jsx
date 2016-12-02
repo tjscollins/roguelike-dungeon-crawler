@@ -4,7 +4,6 @@ var actions = require('actions');
 
 export var BossModal = React.createClass({
   propTypes: {
-    dungeon: React.PropTypes.object.isRequired,
     dispatch: React.PropTypes.func.isRequired
   },
   render: function() {

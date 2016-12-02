@@ -4,6 +4,9 @@ var {connect} = require('react-redux');
 var actions = require('actions');
 
 export var Header = React.createClass({
+  propTypes: {
+    dispatch: React.PropTypes.func.isRequired
+  },
   handleClick: function() {
     var {dispatch} = this.props;
     dispatch(actions.toggleDarkness());
@@ -13,7 +16,7 @@ export var Header = React.createClass({
       <div className="container Header">
         <h1>React Roguelike Test</h1>
         <div className="row">
-          <div className="col-xs-2"></div>
+          <div className="col-xs-2"/>
           <div className="col-xs-8">
             <Stats/>
           </div>

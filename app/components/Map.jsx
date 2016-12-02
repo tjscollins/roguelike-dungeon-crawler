@@ -1,8 +1,10 @@
 var React = require('react');
 var {connect} = require('react-redux');
-var actions = require('actions');
 var Roguelike = require('Roguelike');
-var $ = require('jquery');
+import * as $ from 'jquery';
+
+/*----------Redux----------*/
+import * as actions from 'actions';
 
 export var Map = React.createClass({
   propTypes: {
@@ -10,7 +12,30 @@ export var Map = React.createClass({
     character: React.PropTypes.object.isRequired,
     dispatch: React.PropTypes.func.isRequired
   },
+  componentWillMount: function() {
+    // var {dungeon, character, dispatch} = this.props;
+    // var {position, depth} = character;
+    // var {map, start} = dungeon.levels[depth];
+    // //Generate 1st Level of Dungeon
+    // //If it doesn't already exist
+    // if (!dungeon.levels[0]) {
+    //   dispatch(actions.generateDungeonLevel(100, 100, 0));
+    // }
+    // //Place the character at the start
+    // //if the character isn't already on the map
+    // if (map[position[0]][position[1]] === 0) {
+    //   dispatch(actions.placeCharacterStart(dungeon.levels[depth]));
+    // }
+  },
   componentDidMount: function() {
+    // var {dungeon, character, dispatch} = this.props;
+    // var {position, depth} = character;
+    // var {map, start} = dungeon.levels[depth];
+    // //Place the character at the start
+    // //if the character isn't already on the map
+    // if (map[position[0]][position[1]] === 0) {
+    //   dispatch(actions.placeCharacterStart(dungeon.levels[0]));
+    // }
     window.addEventListener('keydown', this.handleKeyPress, true);
   },
   componentWillReceiveProps: function(nextProps) {
@@ -96,7 +121,6 @@ export var Map = React.createClass({
         // console.log('Unhandled keypress', e.keyCode);
     }
   },
-
   moveInto: function(finalPos) {
     var {character, dungeon, dispatch} = this.props;
     var {depth} = character;
@@ -198,6 +222,9 @@ export var Map = React.createClass({
     var {dungeon, character, dispatch} = this.props;
     var {position} = character;
     var that = this;
+    if (character.health < 0) {
+      $('#Death-Modal').modal('toggle');
+    }
     function grid(depth) {
       var cols = dungeon.levels[depth].map.length;
       var rows = dungeon.levels[depth].map[0].length;

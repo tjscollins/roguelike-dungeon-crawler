@@ -1,18 +1,22 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
-var {Provider} = require('react-redux');
+import React from 'react';
+import ReactDOM from 'react-dom';
 
+/*----------Redux----------*/
+import {Provider} from 'react-redux';
+import * as actions from 'actions';
+import {configure} from 'configureStore';
+
+/*----------Components----------*/
 import Main from 'Main';
-
-var actions = require('actions');
 
 //Create Initial State
 var dungeon = {
   allVisible: false,
   victory: false,
-  levels: []
+  levels: [],
+  lava: {},
+  water: {}
 };
-
 var character = {
   health: 20,
   maxHealth: 20,
@@ -24,12 +28,9 @@ var character = {
   },
   position: [0, 0]
 };
-
-var store = require('configureStore').configure({dungeon, character});
-
-//Generate 1st Level of Dungeon
+var store = configure({dungeon, character});
 store.dispatch(actions.generateDungeonLevel(100, 100, 0));
-store.dispatch(actions.placeCharacterStart(store.getState().dungeon.levels[0]));
+store.dispatch(actions.placeCharacterStart(dungeon.levels[0]));
 
 ReactDOM.render(
   <Provider store={store}>

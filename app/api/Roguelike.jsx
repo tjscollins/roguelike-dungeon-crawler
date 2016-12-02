@@ -1,3 +1,22 @@
+export var lava = () => {
+  var random = () => {
+    console.log('New Random Lava');
+    var int = Math.ceil(Math.random() * 3);
+    switch (int) {
+      case 1:
+        return {title: 'A volcanic eruption!', text: 'The fires of this mountain are legendary--and so are the burns you received when the floor melted beneath your feet and gave way to liquid-hot magma.'};
+      case 2:
+        return {title: 'Just Jump!', text: '"It\'s not much bigger than the fesetival mudpits back home," you tried to tell yourself.  "Just Jump!"  And so you did.  It will take powerful magic to heal these scars now.'};
+      case 3:
+        return {title: 'Virgins Only', text: 'The fire gods are fickle, and dislike the taste of impure flesh.  Fortunately they have spit you back out again, much less than you were.'};
+    }
+  };
+  return {
+    ...random(),
+    random
+  };
+};
+
 export var randomInteger = (max) => {
   return Math.ceil(Math.random() * max);
 };
@@ -443,6 +462,7 @@ var populate = (dLevel, depth) => {
           switch (supply[choice]) {
             case 'downstairs':
               map[i][j] = 9;
+              dLevel.end = [i, j];
               break;
             case 'weapon':
               var name = weaponName(depth);
@@ -484,6 +504,7 @@ var populate = (dLevel, depth) => {
               var dmg = level * 4;
               var position = [i, j];
               map[i][j] = 11;
+              dLevel.end = [i, j];
               monsters.push({level, exp, hp, dmg, position});
               break;
             default:
@@ -543,34 +564,63 @@ export var fallIntoLava = (character) => {
     health: health - 50,
     weapon: {
       weapon: 'Fists',
-      dmg: 1
+      dmg: 2
     }
   };
 };
 
-export var attackMob = (dungeon, character, monsterPosition) => {
-  var {weapon, depth} = character;
+export var combat = ({
+  dungeon,
+  character
+}, monsterPosition) => {
+
+  var {weapon, depth, health, xp} = character;
   var {monsters} = dungeon.levels[depth];
+
   var enemy = monsters.filter((mob) => {
     return mob.position[0] === monsterPosition[0] && mob.position[1] === monsterPosition[1];
   });
-  var index = monsters.indexOf(enemy[0]);
-  var hp = enemy[0].hp - Math.max(0, weapon.dmg - 5 + randomInteger(10));
+  if (enemy.length !== 1)
+    throw new Error('Error finding enemy: No enemies found.');
 
-  if (hp > 0) {
+  var {hp, exp, dmg} = enemy[0];
+  var index = monsters.indexOf(enemy[0]);
+
+  //Begin Rounds of Attack and Defense
+  var newHP = hp,
+    newHealth = health;
+  while (newHP > 0 && newHealth > 0) {
+    //Player attacks the monster
+    newHP -= Math.max(0, weapon.dmg - 5 + randomInteger(10));
+    if (newHP > 0) {
+      //Monster attacks the Player
+      //Player's level acts as Damage Reduction
+      newHealth -= Math.max(0, dmg + randomInteger(10) - Math.floor(xp / 100));
+    }
+  }
+
+  if (newHP > 0) {
     return {
-      ...dungeon,
-      levels: dungeon.levels.slice(0, depth).concat([
-        {
-          ...dungeon.levels[depth],
-          monsters: monsters.slice(0, index).concat([
-            {
-              ...enemy[0],
-              hp
-            }
-          ]).concat(monsters.slice(index + 1))
-        }
-      ]).concat(dungeon.levels.slice(depth + 1))
+      ...state,
+      dungeon: {
+        ...dungeon,
+        levels: dungeon.levels.slice(0, depth).concat([
+          {
+            ...dungeon.levels[depth],
+            monsters: monsters.slice(0, index).concat([
+              {
+                ...enemy[0],
+                hp
+              }
+            ]).concat(monsters.slice(index + 1))
+          }
+        ]).concat(dungeon.levels.slice(depth + 1))
+      },
+      character: {
+        ...character,
+        health: newHealth,
+        xp: xp + exp
+      }
     };
   } else {
     return {

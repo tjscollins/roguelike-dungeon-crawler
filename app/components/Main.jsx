@@ -1,43 +1,25 @@
-var React = require('react');
-var {connect} = require('react-redux');
+import React from 'react';
+
+/*----------Components----------*/
+import BossModal from 'BossModal';
+import DeathModal from 'DeathModal';
 import Header from 'Header';
-var actions = require('actions');
-var $ = require('jquery');
+import LavaModal from 'LavaModal';
+import Legend from 'Legend';
 import Map from 'Map';
 import WaterModal from 'WaterModal';
-import LavaModal from 'LavaModal';
-import DeathModal from 'DeathModal';
-import BossModal from 'BossModal';
-import Legend from 'Legend';
 
-export var Main = React.createClass({
-  propTypes: {
-    dungeon: React.PropTypes.object.isRequired,
-    character: React.PropTypes.object.isRequired
-  },
-  componentWillMount: function() {
-    // var {dungeon, character, dispatch} = this.props;
-    // dispatch(actions.placeCharacterStart(character, dungeon.levels[0]));
-  },
-  render: function() {
-    var {character, dispatch} = this.props;
-    if (character.health < 0) {
-      $('#Death-Modal').modal('toggle');
-    }
-    return (
-      <div>
-        <Header/>
-        <Legend/>
-        <Map/>
-        <BossModal/>
-        <DeathModal/>
-        <WaterModal/>
-        <LavaModal/>
-      </div>
-    );
-  }
-});
+var Main = () => {
+  return (
+    <div>
+      <Header/>
+      <Legend/>
+      <Map/>
+      <BossModal/>
+      <DeathModal/>
+      <WaterModal/>
+    </div>
+  );
+};
 
-export default connect((state) => {
-  return state;
-})(Main);
+export default Main;

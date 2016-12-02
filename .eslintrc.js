@@ -10,9 +10,7 @@ module.exports = {
     "modules": true,
     "classes": true
   },
-  "plugins": [
-    "react"
-  ],
+  "plugins": ["react"],
   "globals": {
     "module": 0
   },
@@ -135,10 +133,12 @@ module.exports = {
     "no-undef": 2, // disallow use of undeclared variables unless mentioned in a /*global */ block
     "no-undefined": 0, // disallow use of undefined variable (off by default)
     "no-undef-init": 1, // disallow use of undefined when initializing variables
-    "no-unused-vars": [1, {
-      "vars": "all",
-      "args": "none"
-    }], // disallow declaration of variables that are not used in the code
+    "no-unused-vars": [
+      1, {
+        "vars": "all",
+        "args": "none"
+      }
+    ], // disallow declaration of variables that are not used in the code
     "no-use-before-define": 0, // disallow use of variables before they are defined
 
     // Node.js
@@ -160,7 +160,9 @@ module.exports = {
     "no-multi-spaces": 0,
     "brace-style": 0, // enforce one true brace style (off by default)
     "camelcase": 1, // require camel case names
-    "consistent-this": [1, "self"], // enforces consistent naming when capturing the current execution context (off by default)
+    "consistent-this": [
+      1, "self"
+    ], // enforces consistent naming when capturing the current execution context (off by default)
     "eol-last": 1, // enforce newline at the end of file, with no multiple empty lines
     "func-names": 0, // require function expressions to have a name (off by default)
     "func-style": 0, // enforces use of function declarations or expressions (off by default)
@@ -176,7 +178,9 @@ module.exports = {
     "no-trailing-spaces": 1, // disallow trailing whitespace at the end of lines
     "no-underscore-dangle": 0, // disallow dangling underscores in identifiers
     "no-mixed-spaces-and-tabs": 1, // disallow mixed spaces and tabs for indentation
-    "quotes": [1, "single"], // specify whether double or single quotes should be used
+    "quotes": [
+      1, "single"
+    ], // specify whether double or single quotes should be used
     "quote-props": 0, // require quotes around object literal property names (off by default)
     "semi": 1, // require or disallow use of semicolons instead of ASI
     "sort-vars": 0, // sort variables within the same declaration block (off by default)

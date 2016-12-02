@@ -8,35 +8,10 @@ describe('actions', () => {
       type: 'GENERATE_DUNGEON_LEVEL',
       cols: 15,
       rows: 15,
-      depth: 0
+      depth: 0,
+      place: false
     };
-    var res = actions.generateDungeonLevel(15, 15, 0);
-    expect(res).toEqual(action);
-  });
-
-  // it('should generate the POPULATE_LEVEL action', () => {
-  //   var action = {
-  //     type: 'POPULATE_LEVEL',
-  //     depth: 1
-  //   };
-  //   var res = actions.populateLevel(1);
-  //   expect(res).toEqual(action);
-  // });
-
-  it('should generate the PLACE_CHARACTER_START action', () => {
-    var action = {
-      type: 'PLACE_CHARACTER_START',
-      level: 'level'
-    };
-    var res = actions.placeCharacterStart('level');
-    expect(res).toEqual(action);
-  });
-
-  it('should generate the TOGGLE_DARKNESS action', () => {
-    var action = {
-      type: 'TOGGLE_DARKNESS'
-    };
-    var res = actions.toggleDarkness();
+    var res = actions.generateDungeonLevel(15, 15, 0, false);
     expect(res).toEqual(action);
   });
 
@@ -48,99 +23,100 @@ describe('actions', () => {
     expect(res).toEqual(action);
   });
 
+  it('should generate the COMBAT action', () => {
+    var action = {
+      type: 'COMBAT',
+      monsterPosition: 'monsterPosition'
+    };
+    var res = actions.combat('monsterPosition');
+    expect(res).toEqual(action);
+  });
+
+  it('should generate the CLEAR_GRID_POSITION action', () => {
+    var action = {
+      type: 'CLEAR_GRID_POSITION',
+      depth: 'depth',
+      monsterPosition: 'monsterPosition'
+    };
+    var res = actions.clearGridPosition('depth', 'monsterPosition');
+    expect(res).toEqual(action);
+  });
+
+  it('should generate the TOGGLE_DARKNESS action', () => {
+    var action = {
+      type: 'TOGGLE_DARKNESS'
+    };
+    var res = actions.toggleDarkness();
+    expect(res).toEqual(action);
+  });
+
   it('should generate the MOVE_NORTH action', () => {
     var action = {
-      type: 'MOVE_NORTH',
-      character: 'character',
-      level: 'level'
+      type: 'MOVE_NORTH'
     };
-    var res = actions.moveNorth('character', 'level');
+    var res = actions.moveNorth();
     expect(res).toEqual(action);
   });
 
   it('should generate the MOVE_EAST action', () => {
     var action = {
-      type: 'MOVE_EAST',
-      character: 'character',
-      level: 'level'
+      type: 'MOVE_EAST'
     };
-    var res = actions.moveEast('character', 'level');
+    var res = actions.moveEast();
     expect(res).toEqual(action);
   });
 
   it('should generate the MOVE_SOUTH action', () => {
     var action = {
-      type: 'MOVE_SOUTH',
-      character: 'character',
-      level: 'level'
+      type: 'MOVE_SOUTH'
     };
-    var res = actions.moveSouth('character', 'level');
+    var res = actions.moveSouth();
     expect(res).toEqual(action);
   });
 
   it('should generate the MOVE_WEST action', () => {
     var action = {
-      type: 'MOVE_WEST',
-      character: 'character',
-      level: 'level'
+      type: 'MOVE_WEST'
     };
-    var res = actions.moveWest('character', 'level');
+    var res = actions.moveWest();
     expect(res).toEqual(action);
   });
 
-  it('should generate the ATTACK_MOB action', () => {
+  it('should generate the GET_ITEM action', () => {
     var action = {
-      type: 'ATTACK_MOB',
-      character: 'character',
-      monsterPosition: 'monsterPosition'
+      type: 'GET_ITEM',
+      itemPosition: 'itemPosition',
+      itemType: 'itemType'
     };
-    var res = actions.attackMob('character', 'monsterPosition');
+    var res = actions.getItem('itemPosition', 'itemType');
     expect(res).toEqual(action);
   });
 
-  it('should generate the CLEAR_POSITION action', () => {
-    var action = {
-      type: 'CLEAR_POSITION',
-      depth: 'depth',
-      monsterPosition: 'monsterPosition'
-    };
-    var res = actions.clearPosition('depth', 'monsterPosition');
-    expect(res).toEqual(action);
-  });
-
-  it('should generate the UPDATE_HP action', () => {
-    var action = {
-      type: 'UPDATE_HP',
-      dHP: 'dHP'
-    };
-    var res = actions.updateHP('dHP');
-    expect(res).toEqual(action);
-  });
-
-  it('should generate the UPDATE_XP action', () => {
-    var action = {
-      type: 'UPDATE_XP',
-      dXP: 'dXP'
-    };
-    var res = actions.updateXP('dXP');
-    expect(res).toEqual(action);
-  });
-
-  it('should generate the GET_EQ action', () => {
-    var action = {
-      type: 'GET_EQ',
-      weapon: 'weapon'
-    };
-    var res = actions.getEquipment('weapon');
-    expect(res).toEqual(action);
-  });
+  // it('should generate the UPDATE_HP action', () => {
+  //   var action = {
+  //     type: 'UPDATE_HP',
+  //     dHP: 'dHP'
+  //   };
+  //   var res = actions.updateHP('dHP');
+  //   expect(res).toEqual(action);
+  // });
+  //
+  // it('should generate the UPDATE_XP action', () => {
+  //   var action = {
+  //     type: 'UPDATE_XP',
+  //     dXP: 'dXP'
+  //   };
+  //   var res = actions.updateXP('dXP');
+  //   expect(res).toEqual(action);
+  // });
 
   it('should generate the UPDATE_DEPTH action', () => {
     var action = {
       type: 'UPDATE_DEPTH',
-      depth: 'depth'
+      depth: 'depth',
+      dir: 'up'
     };
-    var res = actions.updateDepth('depth');
+    var res = actions.updateDepth('depth', 'up');
     expect(res).toEqual(action);
   });
 
