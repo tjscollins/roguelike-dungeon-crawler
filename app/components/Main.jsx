@@ -8,6 +8,7 @@ import WaterModal from 'WaterModal';
 import LavaModal from 'LavaModal';
 import DeathModal from 'DeathModal';
 import BossModal from 'BossModal';
+import Legend from 'Legend';
 
 export var Main = React.createClass({
   propTypes: {
@@ -26,6 +27,7 @@ export var Main = React.createClass({
     return (
       <div>
         <Header/>
+        <Legend/>
         <Map/>
         <BossModal/>
         <DeathModal/>

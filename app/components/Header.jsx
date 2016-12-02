@@ -13,7 +13,8 @@ export var Header = React.createClass({
       <div className="container Header">
         <h1>React Roguelike Test</h1>
         <div className="row">
-          <div className="col-xs-10">
+          <div className="col-xs-2"></div>
+          <div className="col-xs-8">
             <Stats/>
           </div>
           <div className="col-xs-2">

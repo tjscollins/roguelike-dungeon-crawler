@@ -151,8 +151,7 @@ export var Map = React.createClass({
         var newDepth = depth + 1;
         console.log(dungeon.levels[newDepth]);
         if (!dungeon.levels[newDepth]) {
-          dispatch(actions.generateDungeonLevel(Roguelike.randomInteger(50) + 25, Roguelike.randomInteger(50) + 25));
-          dispatch(actions.populateLevel(newDepth));
+          dispatch(actions.generateDungeonLevel(Roguelike.randomInteger(50) + 25, Roguelike.randomInteger(50) + 25), newDepth);
         }
         dispatch(actions.updateDepth(newDepth));
         return this.props.character;

@@ -28,10 +28,7 @@ var createMap = (grid) => {
     start: []
   };
   do {
-    // console.log('Creating room with', grid, type, rooms);
     var {inProgress, type, rooms} = randomRoom(level, type, rooms);
-    // console.log('InProgress', inProgress, type, rooms);
-    // console.log(level);
   } while (inProgress);
   return level;
 };
@@ -410,12 +407,11 @@ var populate = (dLevel, depth) => {
     weapon = {};
   var width = map.length;
   var height = map[0].length;
-  var bossLevel = true;
-  // depth > 2
-  //   ? randomInteger(2) > 1
-  //     ? true
-  //     : false
-  //   : false;
+  var bossLevel = depth > 2
+    ? randomInteger(2) > 1
+      ? true
+      : false
+    : false;
   var supply = bossLevel
     ? ['boss', 'weapon']
     : ['downstairs', 'weapon'];
