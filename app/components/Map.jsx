@@ -156,9 +156,9 @@ export var Map = React.createClass({
     }
   },
   render: function() {
-    var {dungeon, character, dispatch} = this.props;
+    var {dungeon, character} = this.props;
     var {position} = character;
-    var that = this;
+    var self = this;
     if (character.health <= 0) {
       $('#Death-Modal').modal('show');
     }
@@ -213,7 +213,7 @@ export var Map = React.createClass({
           }
           // console.log('xRange', xRange);
           for (var j = xRange[0]; j < xRange[1]; j++) {
-            row[j] = <div key={j + 'x' + ynum} className={that.gridClass(dungeon.levels[depth].map, j, ynum)}/>;
+            row[j] = <div key={j + 'x' + ynum} className={self.gridClass(dungeon.levels[depth].map, j, ynum)}/>;
           }
           return row;
         };
@@ -222,7 +222,7 @@ export var Map = React.createClass({
       return gridDivs;
     }
     return (
-      <div onKeyPress={this.handleKeyPress} className="container Map">
+      <div className="container Map">
         {grid(character.depth)}
       </div>
     );

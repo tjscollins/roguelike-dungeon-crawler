@@ -408,12 +408,11 @@ var populate = (dLevel, depth) => {
     weapon = {};
   var width = map.length;
   var height = map[0].length;
-  var bossLevel = true;
-  // depth > 2
-  //   ? randomInteger(2) > 1
-  //     ? true
-  //     : false
-  //   : false;
+  var bossLevel = depth > 2
+    ? randomInteger(2) > 1
+      ? true
+      : false
+    : false;
   var supply = bossLevel
     ? ['boss', 'weapon']
     : ['downstairs', 'weapon'];

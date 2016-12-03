@@ -79,7 +79,7 @@ describe('reducers', () => {
       }
     };
     var res = reducers.reducer(df(state), df(action));
-    expect(res.levels[0].monsters.length).toBeLessThan(state.dungeon.levels[0].monsters.length);
+    expect(res.dungeon.levels[0].monsters.length).toBeLessThan(state.dungeon.levels[0].monsters.length);
   });
 
   it('should CLEAR GRID POSITIONs', () => {
@@ -450,7 +450,163 @@ describe('reducers', () => {
       itemType: 'healthPotion'
     }));
     expect(newRes.character.health).toEqual(110);
+  });
 
+  it('should damage the player for FALLing INTO the WATER', () => {
+    var action = {
+      type: 'FALL_INTO_WATER'
+    };
+    var state = {
+      dungeon: {
+        water: {}
+      },
+      character: {
+        health: 10,
+        weapon: {
+          dmg: 5
+        }
+      }
+    };
+    var res = reducers.reducer(df(state), df(action));
+    expect(res.character.health).toBe(5);
+    expect(res.character.weapon.dmg).toBe(4);
+    expect(res.dungeon.water.title).toExist();
+    expect(res.dungeon.water.text).toExist();
+  });
+
+  it('should damage the player for FALLing INTO the LAVA', () => {
+    var action = {
+      type: 'FALL_INTO_LAVA'
+    };
+    var state = {
+      dungeon: {
+        lava: {}
+      },
+      character: {
+        health: 10,
+        weapon: {
+          dmg: 50
+        }
+      }
+    };
+    var res = reducers.reducer(df(state), df(action));
+    expect(res.character.health).toBe(-40);
+    expect(res.character.weapon.name).toBe('Fists');
+    expect(res.character.weapon.dmg).toBe(2);
+    expect(res.dungeon.lava.title).toExist();
+    expect(res.dungeon.lava.text).toExist();
+  });
+
+  it('should UPDATE the DEPTH at which the player is exploring when descending', () => {
+    var action = {
+      type: 'UPDATE_DEPTH',
+      depth: 1,
+      dir: 'down'
+    };
+    var state = {
+      dungeon: {
+        levels: [
+          {
+            map: [
+              [
+                1, 1, 1
+              ],
+              [
+                1, 1, 1
+              ],
+              [1, 1, 1]
+            ],
+            start: [0, 0]
+          }, {
+            map: [
+              [
+                1, 1, 1
+              ],
+              [
+                1, 1, 1
+              ],
+              [1, 1, 1]
+            ],
+            start: [2, 2]
+          }
+        ]
+      },
+      character: {
+        depth: 0,
+        position: [0, 0]
+      }
+    };
+
+    var res = reducers.reducer(df(state), df(action));
+    expect(res.character.depth).toBe(1);
+    expect(res.character.position).toEqual([2, 2]);
+  });
+
+  it('should UPDATE the DEPTH at which the player is exploring when ascending', () => {
+    var action = {
+      type: 'UPDATE_DEPTH',
+      depth: 0,
+      dir: 'down'
+    };
+    var state = {
+      dungeon: {
+        levels: [
+          {
+            map: [
+              [
+                1, 1, 1
+              ],
+              [
+                1, 1, 1
+              ],
+              [1, 1, 1]
+            ],
+            start: [0, 0]
+          }, {
+            map: [
+              [
+                1, 1, 1
+              ],
+              [
+                1, 1, 1
+              ],
+              [1, 1, 1]
+            ],
+            start: [2, 2]
+          }
+        ]
+      },
+      character: {
+        depth: 1,
+        position: [2, 2]
+      }
+    };
+
+    var res = reducers.reducer(df(state), df(action));
+    expect(res.character.depth).toBe(0);
+    expect(res.character.position).toEqual([0, 0]);
+  });
+
+  it('should RESET CHARACTER data', () => {
+    var action = {
+      type: 'RESET_CHARACTER'
+    };
+    var state = {
+      character: {
+        health: 100,
+        maxHealth: 150,
+        xp: 100,
+        depth: 0,
+        weapon: {
+          name: 'Flaming Fists',
+          dmg: 5
+        }
+      }
+    };
+    var res = reducers.reducer(df(state), df(action));
+    expect(res.character.health).toBe(20);
+    expect(res.character.xp).toBe(0);
+    expect(res.character.weapon.name).toBe('Fists');
   });
 
 });
