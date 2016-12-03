@@ -408,11 +408,12 @@ var populate = (dLevel, depth) => {
     weapon = {};
   var width = map.length;
   var height = map[0].length;
-  var bossLevel = depth > 2
-    ? randomInteger(2) > 1
-      ? true
-      : false
-    : false;
+  var bossLevel = true;
+  // depth > 2
+  //   ? randomInteger(2) > 1
+  //     ? true
+  //     : false
+  //   : false;
   var supply = bossLevel
     ? ['boss', 'weapon']
     : ['downstairs', 'weapon'];
@@ -554,7 +555,7 @@ export var combat = (state, monsterPosition) => {
     if (newHP > 0) {
       //Monster attacks the Player
       //Player's level acts as Damage Reduction
-      newHealth -= Math.max(0, dmg + randomInteger(10) - Math.floor(xp / 100));
+      newHealth -= Math.max(0, dmg + randomInteger(10) - character.level);
     }
   }
 
@@ -581,6 +582,16 @@ export var combat = (state, monsterPosition) => {
       }
     };
   } else {
+    var newMaxHealth,
+      newLevel;
+    if (Math.floor((xp + exp) / 100 + 1) > character.level) {
+      newLevel = character.level + 1;
+      newMaxHealth = character.maxHealth + 10;
+      newHealth = newMaxHealth;
+    } else {
+      newLevel = character.level;
+      newMaxHealth = character.maxHealth;
+    }
     return {
       ...state,
       dungeon: {
@@ -595,6 +606,8 @@ export var combat = (state, monsterPosition) => {
       character: {
         ...state.character,
         health: newHealth,
+        level: newLevel,
+        maxHealth: newMaxHealth,
         xp: xp + exp
       }
     };

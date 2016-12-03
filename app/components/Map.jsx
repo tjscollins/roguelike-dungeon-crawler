@@ -13,7 +13,7 @@ export var Map = React.createClass({
     dispatch: React.PropTypes.func.isRequired
   },
   componentWillMount: function() {
-    console.log('Props are', this.props);
+    // console.log('Props are', this.props);
   },
   componentDidMount: function() {
     window.addEventListener('keydown', this.handleKeyPress, true);
@@ -145,30 +145,10 @@ export var Map = React.createClass({
       case 11:
         //Attacking the final boss of the dungeon
         // console.log('Attacking');
-        var {exp} = dungeon.levels[depth].monsters.filter((mob) => {
-          return mob.position[0] === finalPos[0] && mob.position[1] === finalPos[1];
-        })[0];
-        // console.log(exp);
-        dispatch(actions.attackMob(character, finalPos));
-        var enemy = this.props.dungeon.levels[depth].monsters.filter((mob) => {
-          return mob.position[0] === finalPos[0] && mob.position[1] === finalPos[1];
-        });
-        // console.log(enemy[0]);
-        if (enemy[0]) {
-          var dmgTaken = Math.max(0, enemy[0].dmg + Math.ceil(Math.random() * 10) - Math.floor(character.xp / 100));
-          dispatch(actions.updateHP(dmgTaken * -1));
-          if (this.props.character.health > 0) {
-            this.moveInto(finalPos);
-          } else {
-            //Character Died!
-            return this.props.character;
-          }
-        } else {
-          // console.log(exp);
-          dispatch(actions.clearPosition(depth, finalPos));
-          dispatch(actions.updateXP(exp));
-          $('#Boss-Modal').modal('toggle');
-          return this.props.character;
+        dispatch(actions.combat(finalPos));
+        if (character.health > 0) {
+          dispatch(actions.clearGridPosition(depth, finalPos));
+          $('#Boss-Modal').modal('show');
         }
         break;
       default:
@@ -179,7 +159,7 @@ export var Map = React.createClass({
     var {dungeon, character, dispatch} = this.props;
     var {position} = character;
     var that = this;
-    if (character.health < 0) {
+    if (character.health <= 0) {
       $('#Death-Modal').modal('show');
     }
     function grid(depth) {

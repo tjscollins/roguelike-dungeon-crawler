@@ -11,6 +11,7 @@ var initialDungeon = {
 var initialCharacter = {
   health: 20,
   maxHealth: 20,
+  level: 1,
   xp: 0,
   depth: 0,
   weapon: {
