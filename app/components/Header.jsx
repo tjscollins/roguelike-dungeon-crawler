@@ -21,7 +21,7 @@ export var Header = React.createClass({
             <Stats/>
           </div>
           <div className="col-xs-2">
-            <button onClick={this.handleClick}>Toggle Darkness</button>
+            <button className="btn btn-secondary" onClick={this.handleClick}>Toggle Darkness</button>
           </div>
         </div>
       </div>

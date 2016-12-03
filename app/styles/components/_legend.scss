@@ -1,16 +1,37 @@
 .Legend {
   position: fixed;
-  left: 5%;
   top: 200px;
-  width: 15%;
+  left: 5%;
+  width: 20%;
+
+  @include for-screen-max(929px) {
+    top: 700px;
+    left: 15%;
+    width: 70%;
+    font-size: 1rem;
+  }
+  @include for-screen-min(930px) {
+    left: 3%;
+    width: 25%;
+  }
+  @include for-screen-min(1150px) {
+    left: 5%;
+    width: 20%;
+  }
 
   h3 {
     text-align: center;
   }
   p {
     margin-left: 50px;
+    @include for-screen-max(929px) {
+      margin-left: 35px;
+    }
   }
   .col-xs-12 {
     margin-top: 5px;
+    @include for-screen-max(929px) {
+      margin-top: 0px;
+    }
   }
 }

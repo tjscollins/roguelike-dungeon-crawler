@@ -2,14 +2,26 @@
   position: fixed;
   top: 200px;
   left: 30%;
-  width: 50%;
+  width: 70%;
 }
 
 .square {
     border: none;
     background: grey;
-    width: 15px;
-    height: 15px;
+    height: 10px;
+    width: 10px;
+    @include for-screen-min(740px) {
+      height: 12px;
+      width: 12px;
+    }
+    @include for-screen-min(930px) {
+      height: 15px;
+      width: 15px;
+    }
+    @include for-screen-min(1150px) {
+      height: 18px;
+      width: 18px;
+    }
     margin: -1px;
     float: left;
 }
