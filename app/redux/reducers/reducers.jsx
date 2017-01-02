@@ -32,8 +32,10 @@ export var reducer = (state = {
       //this new level.
       var {dungeon, character} = state;
       var {cols, rows, depth, place} = action;
+      console.log('creating new dungone with  action', action);
       var newLevel = Roguelike.randomLevel(cols, rows, depth, true);
       if (place) {
+        console.log('Placing character at depth: ', depth, ' and position: ', newLevel.start);
         return {
           ...state,
           character: {

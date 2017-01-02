@@ -131,7 +131,7 @@ export var Map = React.createClass({
         //Descending to a lower level of the dungeon
         var newDepth = depth + 1;
         if (!dungeon.levels[newDepth]) {
-          dispatch(actions.generateDungeonLevel(Roguelike.randomInteger(50) + 25, Roguelike.randomInteger(50) + 25), newDepth, true);
+          dispatch(actions.generateDungeonLevel(Roguelike.randomInteger(50) + 25, Roguelike.randomInteger(50) + 25, newDepth, true));
         }
         dispatch(actions.updateDepth(newDepth));
         break;
@@ -144,7 +144,6 @@ export var Map = React.createClass({
         break;
       case 11:
         //Attacking the final boss of the dungeon
-        // console.log('Attacking');
         dispatch(actions.combat(finalPos));
         if (character.health > 0) {
           dispatch(actions.clearGridPosition(depth, finalPos));
@@ -187,7 +186,6 @@ export var Map = React.createClass({
           position[1] + 25
         ];
       }
-      // console.log('yRange', yRange);
       for (var i = yRange[0]; i < yRange[1]; i++) {
         var rowHTML = (xnum, ynum) => {
           var row = [],

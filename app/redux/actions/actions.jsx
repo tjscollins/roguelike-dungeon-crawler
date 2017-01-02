@@ -1,4 +1,5 @@
 export var generateDungeonLevel = (cols, rows, depth, place = true) => {
+  console.log('creating new dungeon action', cols, rows, depth);
   return {type: 'GENERATE_DUNGEON_LEVEL', cols, rows, depth, place};
 };
 
